@@ -53,8 +53,12 @@ namespace zkfpPrototype
             this.mainControl = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
             this.secondPage = new System.Windows.Forms.TabPage();
+            this.btnDisconnect = new System.Windows.Forms.Button();
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
+            this.btnInsert = new System.Windows.Forms.Button();
+            this.inputId = new System.Windows.Forms.TextBox();
+            this.inputTmp = new System.Windows.Forms.TextBox();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -103,7 +107,7 @@ namespace zkfpPrototype
             // 
             // btnMatch
             // 
-            this.btnMatch.Enabled = false;
+            //this.btnMatch.Enabled = false;
             this.btnMatch.Location = new System.Drawing.Point(175, 443);
             this.btnMatch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMatch.Name = "btnMatch";
@@ -128,7 +132,7 @@ namespace zkfpPrototype
             // btnCreateTb
             // 
             this.btnCreateTb.Enabled = false;
-            this.btnCreateTb.Location = new System.Drawing.Point(332, 75);
+            this.btnCreateTb.Location = new System.Drawing.Point(51, 136);
             this.btnCreateTb.Margin = new System.Windows.Forms.Padding(4, 6, 4, 5);
             this.btnCreateTb.Name = "btnCreateTb";
             this.btnCreateTb.Size = new System.Drawing.Size(150, 50);
@@ -158,7 +162,7 @@ namespace zkfpPrototype
             // 
             // btnConnectDb
             // 
-            this.btnConnectDb.Location = new System.Drawing.Point(54, 75);
+            this.btnConnectDb.Location = new System.Drawing.Point(51, 41);
             this.btnConnectDb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnConnectDb.Name = "btnConnectDb";
             this.btnConnectDb.Size = new System.Drawing.Size(150, 50);
@@ -315,15 +319,28 @@ namespace zkfpPrototype
             // 
             // secondPage
             // 
+            this.secondPage.Controls.Add(this.btnDisconnect);
             this.secondPage.Controls.Add(this.dbControl);
             this.secondPage.Controls.Add(this.btnConnectDb);
             this.secondPage.Controls.Add(this.btnCreateTb);
             this.secondPage.Controls.Add(this.secondMessageBox);
-            this.secondPage.Location = new System.Drawing.Point(4, 32);
+            this.secondPage.Location = new System.Drawing.Point(4, 29);
             this.secondPage.Name = "secondPage";
-            this.secondPage.Size = new System.Drawing.Size(1095, 557);
+            this.secondPage.Size = new System.Drawing.Size(1095, 560);
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
+            // 
+            // btnDisconnect
+            // 
+            this.btnDisconnect.Enabled = false;
+            this.btnDisconnect.Location = new System.Drawing.Point(329, 41);
+            this.btnDisconnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDisconnect.Name = "btnDisconnect";
+            this.btnDisconnect.Size = new System.Drawing.Size(170, 50);
+            this.btnDisconnect.TabIndex = 19;
+            this.btnDisconnect.Text = "Disconnect Database";
+            this.btnDisconnect.UseVisualStyleBackColor = true;
+            this.btnDisconnect.Click += new System.EventHandler(this.BtnDisconnect_Click);
             // 
             // dbControl
             // 
@@ -345,6 +362,30 @@ namespace zkfpPrototype
             this.secondMessageBox.Size = new System.Drawing.Size(612, 327);
             this.secondMessageBox.TabIndex = 17;
             this.secondMessageBox.Text = "Please connect to your database.";
+            // 
+            // btnInsert
+            // 
+            this.btnInsert.Location = new System.Drawing.Point(331, 124);
+            this.btnInsert.Name = "btnInsert";
+            this.btnInsert.Size = new System.Drawing.Size(150, 50);
+            this.btnInsert.TabIndex = 19;
+            this.btnInsert.Text = "Insert";
+            this.btnInsert.UseVisualStyleBackColor = true;
+            this.btnInsert.Click += new System.EventHandler(this.BtnInsert_Click);
+            // 
+            // inputId
+            // 
+            this.inputId.Location = new System.Drawing.Point(81, 124);
+            this.inputId.Name = "inputId";
+            this.inputId.Size = new System.Drawing.Size(100, 22);
+            this.inputId.TabIndex = 20;
+            // 
+            // inputTmp
+            // 
+            this.inputTmp.Location = new System.Drawing.Point(81, 179);
+            this.inputTmp.Name = "inputTmp";
+            this.inputTmp.Size = new System.Drawing.Size(100, 22);
+            this.inputTmp.TabIndex = 21;
             // 
             // Form1
             // 
@@ -405,7 +446,10 @@ namespace zkfpPrototype
         private DataGridViewTextBoxColumn fpTemplate;
         private DataGridViewTextBoxColumn fpId;
         private Label labelNumOfFp;
-        
+        private Button btnInsert;
+        private TextBox inputTmp;
+        private TextBox inputId;
+        private Button btnDisconnect;
     }
 }
 
