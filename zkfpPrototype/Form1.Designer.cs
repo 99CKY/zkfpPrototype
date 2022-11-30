@@ -119,7 +119,7 @@ namespace zkfpPrototype
             // 
             // btnVerify
             // 
-            this.btnVerify.Enabled = false;
+            //this.btnVerify.Enabled = false;
             this.btnVerify.Location = new System.Drawing.Point(329, 443);
             this.btnVerify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnVerify.Name = "btnVerify";
