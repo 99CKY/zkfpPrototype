@@ -53,6 +53,7 @@ namespace zkfpPrototype
             this.mainControl = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
             this.secondPage = new System.Windows.Forms.TabPage();
+            this.btnVerifyTest = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
@@ -107,7 +108,7 @@ namespace zkfpPrototype
             // 
             // btnMatch
             // 
-            //this.btnMatch.Enabled = false;
+            this.btnMatch.Enabled = false;
             this.btnMatch.Location = new System.Drawing.Point(175, 443);
             this.btnMatch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMatch.Name = "btnMatch";
@@ -119,7 +120,7 @@ namespace zkfpPrototype
             // 
             // btnVerify
             // 
-            //this.btnVerify.Enabled = false;
+            this.btnVerify.Enabled = false;
             this.btnVerify.Location = new System.Drawing.Point(329, 443);
             this.btnVerify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnVerify.Name = "btnVerify";
@@ -330,6 +331,16 @@ namespace zkfpPrototype
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
+            // btnVerifyTest
+            // 
+            this.btnVerifyTest.Location = new System.Drawing.Point(329, 136);
+            this.btnVerifyTest.Name = "btnVerifyTest";
+            this.btnVerifyTest.Size = new System.Drawing.Size(170, 50);
+            this.btnVerifyTest.TabIndex = 20;
+            this.btnVerifyTest.Text = "Verify test";
+            this.btnVerifyTest.UseVisualStyleBackColor = true;
+            this.btnVerifyTest.Click += new System.EventHandler(this.BtnVerifyTest_Click);
+            // 
             // btnDisconnect
             // 
             this.btnDisconnect.Enabled = false;
@@ -450,6 +461,7 @@ namespace zkfpPrototype
         private TextBox inputTmp;
         private TextBox inputId;
         private Button btnDisconnect;
+        private Button btnVerifyTest;
     }
 }
 

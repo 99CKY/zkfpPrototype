@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -24,13 +25,16 @@ namespace zkfpPrototype
         string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint Project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
         SqlConnection conn = new SqlConnection();
         private static ArrayList ListFpTemplate = new ArrayList();
-        private static ArrayList ListFpId = new ArrayList();
+        private static ArrayList ListId = new ArrayList();
+
+        Dictionary<int, string> DataDictionary = new Dictionary<int, string>();
         IntPtr mDevHandle = IntPtr.Zero;
         IntPtr mDBHandle = IntPtr.Zero;
         IntPtr FormHandle = IntPtr.Zero;
         bool bIsTimeToDie = false;
         bool IsRegister = false;
         bool bIdentify = true;
+        bool isExist = true;
         byte[] FPBuffer;
         int RegisterCount = 0;
         const int REGISTER_FINGER_COUNT = 3;
@@ -159,7 +163,7 @@ namespace zkfpPrototype
                 catch (Exception ex)
                 {
                     messageBox.AppendText(ex.Message);
-                    Thread.Sleep(200);
+                    
                 }
                 finally
                 {
@@ -275,18 +279,24 @@ namespace zkfpPrototype
             SqlDataReader myReader = selCommand.ExecuteReader();
 */
             int ret = zkfpErrOk;
-            int fid = 0, score = 0;
             
-            ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref fid, ref score);
-            //ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref value, ref score);
-            //RegTmp = Convert.FromBase64String(myReader["fp_template"].ToString()); ;
-            //int ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
-            if (zkfpErrOk == ret)
+            //ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref fid, ref score);
+            
+            /*if (zkfpErrOk == ret)
             {
                 messageBox.AppendText($"\nYour fingerprint already register.");
                 return;
+            }*/
+            for (int i = 0; i < ListFpTemplate.Count; i++)
+            {
+                RegTmp = Convert.FromBase64String(ListFpTemplate[i].ToString());
+                ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
+                if (0 < ret)
+                {
+                    messageBox.AppendText($"\nYour fingerprint already register, Id = {ListId[i]}");
+                    return;
+                }           
             }
-
             if (RegisterCount > 0 && zkfp2.DBMatch(mDBHandle, CapTmp, RegTmps[RegisterCount - 1]) <= 0)
             {
                 messageBox.AppendText("Please press the same finger 3 times for the registration.\n");
@@ -301,8 +311,8 @@ namespace zkfpPrototype
             if (RegisterCount >= REGISTER_FINGER_COUNT)
             {
                 RegisterCount = 0;
-                if (zkfpErrOk == (ret = zkfp2.DBMerge(mDBHandle, RegTmps[0], RegTmps[1], RegTmps[2], RegTmp, ref cbRegTmp)) &&
-                       zkfpErrOk == (ret = zkfp2.DBAdd(mDBHandle, iFid, RegTmp)))
+                if (zkfpErrOk == (ret = zkfp2.DBMerge(mDBHandle, RegTmps[0], RegTmps[1], RegTmps[2], RegTmp, ref cbRegTmp))) /*&&
+                       zkfpErrOk == (ret = zkfp2.DBAdd(mDBHandle, iFid, RegTmp)))*/
                 {
                     iFid++;
                     messageBox.AppendText($"\nRegister success");
@@ -324,6 +334,7 @@ namespace zkfpPrototype
                     fpData.Rows.Clear();
                     string value = "SELECT COUNT(*) FROM Table_fp";
                     int count = 0;
+                    conn.Open();
                     SqlCommand myCommand = new SqlCommand(value, conn);
                     count = (int)myCommand.ExecuteScalar();
                     try
@@ -366,9 +377,25 @@ namespace zkfpPrototype
             {
                 int ret = zkfpErrOk;
                 int fid = 0, score = 0;
-                ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref fid, ref score);
                 
-                if (zkfpErrOk == ret)
+                for (int i = 0; i < ListFpTemplate.Count; i++)
+                {
+                    RegTmp = Convert.FromBase64String(ListFpTemplate[i].ToString());                   
+                    fid = (int)ListId[i] + 1;
+                    ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref fid, ref score);
+                    
+                    if (zkfpErrOk == ret)
+                    {
+                        messageBox.AppendText($"\nIdentify fingerprint success, fid = {fid} , Score= {score} !");
+                        return;
+                    }
+                    else
+                    {
+                        messageBox.AppendText($"\nFingerprint not found in database, Score= {score} !");
+                        return;
+                    }
+                }
+                /*if (zkfpErrOk == ret)
                 {
                     messageBox.AppendText($"\nIdentify fingerprint success, fid = {fid} , Score= {score} !");
                     return;
@@ -377,47 +404,47 @@ namespace zkfpPrototype
                 {
                     messageBox.AppendText($"\nIdentify fingerprint fail, Score= {score} !");
                     return;
-                }
+                }*/
 
             }
             else
             {
                 int ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
 
-                conn.Open();
+                /*conn.Open();
                 SqlCommand selCommand = new SqlCommand("select fp_template from Table_fp", conn);
                 SqlDataReader myReader = selCommand.ExecuteReader();
-                
                 while (myReader.Read())
                 {
                     ListFpTemplate.Add(myReader["fp_template"].ToString());
-                    
-                }
+                    //DataDictionary.Add((int)myReader["Id"], myReader["fp_template"].ToString());
+                }*/
                 for (int i = 0; i < ListFpTemplate.Count; i++)
                 {
                     RegTmp = Convert.FromBase64String(ListFpTemplate[i].ToString());
                     ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
-                    //messageBox.AppendText($"\nTemplate {i}: {ListFpTemplate[i].ToString()}");
                     if (0 < ret)
                     {
-                        messageBox.AppendText($"\nMatch fingerprint success, Score= {ret} !");
-                        //return;
+                        messageBox.AppendText($"\nFingerprint found, Id= {ListId[i]}, Score= {ret} !");
+                        return;
                     }
                     else
                     {
-                        messageBox.AppendText($"\nMatch fingerprint fail, Error code= {ret}");
-                        //return;
+                        messageBox.AppendText($"\nFingerprint not found in database, Error code= {ret}");
+                        //RegistrationCase(ListFpTemplate[i].ToString(), conn);
+
                     }
                 }
+
                 /*if (0 < ret)
                 {
                     messageBox.AppendText($"\nMatch fingerprint success, Score= {ret} !");
-                    return;
+                    //return;
                 }
                 else
                 {
                     messageBox.AppendText($"\nMatch fingerprint fail, Error code= {ret}");
-                    return;
+                    //return;
                 }*/
             }
         }
@@ -460,8 +487,11 @@ namespace zkfpPrototype
                 newRow.CreateCells(fpData);
                 newRow.Cells[0].Value = myReader["Id"];
                 newRow.Cells[1].Value = myReader["fp_template"];
+                ListId.Add(myReader["Id"]);
+                ListFpTemplate.Add(myReader["fp_template"]);
                 fpData.Rows.Add(newRow);
             }
+            
             conn.Close();
         }
 
@@ -525,6 +555,23 @@ namespace zkfpPrototype
         {
             conn.Close();
             secondMessageBox.AppendText($"\nDatabase disconnect");
+        }
+
+        private void BtnVerifyTest_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DisplayMessage(bool isExist, int ret)
+        {
+            if (isExist)
+            {
+                messageBox.AppendText($"\nMatch fingerprint success, Score= {ret} !");
+            }
+            else
+            {
+                messageBox.AppendText($"\nMatch fingerprint fail, Error code= {ret}");
+            }
         }
     }
 

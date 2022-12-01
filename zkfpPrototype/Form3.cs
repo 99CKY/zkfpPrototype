@@ -35,5 +35,10 @@ namespace zkfpPrototype
             tbName.Text = "";
             tbDataType.Text = "";
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
