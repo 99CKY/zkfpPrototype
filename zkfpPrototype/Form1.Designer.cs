@@ -53,7 +53,6 @@ namespace zkfpPrototype
             this.mainControl = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
             this.secondPage = new System.Windows.Forms.TabPage();
-            this.btnVerifyTest = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
@@ -133,7 +132,7 @@ namespace zkfpPrototype
             // btnCreateTb
             // 
             this.btnCreateTb.Enabled = false;
-            this.btnCreateTb.Location = new System.Drawing.Point(51, 136);
+            this.btnCreateTb.Location = new System.Drawing.Point(51, 137);
             this.btnCreateTb.Margin = new System.Windows.Forms.Padding(4, 6, 4, 5);
             this.btnCreateTb.Name = "btnCreateTb";
             this.btnCreateTb.Size = new System.Drawing.Size(150, 50);
@@ -331,16 +330,6 @@ namespace zkfpPrototype
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
-            // btnVerifyTest
-            // 
-            this.btnVerifyTest.Location = new System.Drawing.Point(329, 136);
-            this.btnVerifyTest.Name = "btnVerifyTest";
-            this.btnVerifyTest.Size = new System.Drawing.Size(170, 50);
-            this.btnVerifyTest.TabIndex = 20;
-            this.btnVerifyTest.Text = "Verify test";
-            this.btnVerifyTest.UseVisualStyleBackColor = true;
-            this.btnVerifyTest.Click += new System.EventHandler(this.BtnVerifyTest_Click);
-            // 
             // btnDisconnect
             // 
             this.btnDisconnect.Enabled = false;
@@ -461,7 +450,7 @@ namespace zkfpPrototype
         private TextBox inputTmp;
         private TextBox inputId;
         private Button btnDisconnect;
-        private Button btnVerifyTest;
+        
     }
 }
 
