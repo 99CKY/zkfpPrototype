@@ -14,16 +14,14 @@ namespace zkfpPrototype
 {
     public partial class Form1 : Form
     {
-        string datasource = @"DBSERV\SQL2K8";//server name
-        string database = "testScan"; //database name
-        string username = "fis"; //username
-        string password = "fis"; //password
-        string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint Project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
+        readonly string datasource = @"DBSERV\SQL2K8";//server name
+        readonly string database = "testScan"; //database name
+        readonly string username = "fis"; //username
+        readonly string password = "fis"; //password
+        readonly string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint Project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
         SqlConnection conn = new SqlConnection();
         private static ArrayList ListFpTemplate = new ArrayList();
         private static ArrayList ListId = new ArrayList();
-
-        Dictionary<int, string> DataDictionary = new Dictionary<int, string>();
         IntPtr mDevHandle = IntPtr.Zero;
         IntPtr mDBHandle = IntPtr.Zero;
         IntPtr FormHandle = IntPtr.Zero;
@@ -44,7 +42,6 @@ namespace zkfpPrototype
         int iFid = 1;
         int nCount; // Count connect device
         int zkfpErrOk = zkfperrdef.ZKFP_ERR_OK;// ZKDP_ERR_OK = 0, operation success
-        int id = 0;
         private int mfpWidth = 0;
         private int mfpHeight = 0;
         private int mfpDpi = 0;
@@ -158,7 +155,7 @@ namespace zkfpPrototype
                 
                 catch (Exception ex)
                 {
-                    messageBox.AppendText(ex.Message);
+                    messageBox.AppendText($"\nError message: {ex.Message}");
                     
                 }
                 finally
@@ -217,13 +214,11 @@ namespace zkfpPrototype
                         SqlConnection conn = new SqlConnection(localDatabase);
                         if (IsRegister)
                         {
-                            // Registration
                             RegistrationCase(strFp, conn);
                         }
                         else
                         {
-                            // Verification
-                            VerificationCse(strFp, conn);
+                            VerificationCse();
                         }
                         break;
                     }
@@ -252,8 +247,6 @@ namespace zkfpPrototype
             if (bIdentify)
             {
                 bIdentify = false;
-                //IsRegister = false;
-                
                 messageBox.AppendText("\nPlease press your finger!");
             }
         }
@@ -271,14 +264,7 @@ namespace zkfpPrototype
         private void RegistrationCase(string strFp, SqlConnection conn)
         {
             int ret = zkfpErrOk;
-            
-            //ret = zkfp2.DBIdentify(mDBHandle, CapTmp, ref fid, ref score);
-            
-            /*if (zkfpErrOk == ret)
-            {
-                messageBox.AppendText($"\nYour fingerprint already register.");
-                return;
-            }*/
+            //Check fingerprint already register or not
             for (int i = 0; i < ListFpTemplate.Count; i++)
             {
                 RegTmp = Convert.FromBase64String(ListFpTemplate[i].ToString());
@@ -297,7 +283,7 @@ namespace zkfpPrototype
 
             Array.Copy(CapTmp, RegTmps[RegisterCount], cbCapTmp);
             String strBase64 = zkfp2.BlobToBase64(CapTmp, cbCapTmp);
-            byte[] blob = zkfp2.Base64ToBlob(strBase64);
+            //byte[] blob = zkfp2.Base64ToBlob(strBase64);
             RegisterCount++;
 
             if (RegisterCount >= REGISTER_FINGER_COUNT)
@@ -308,20 +294,7 @@ namespace zkfpPrototype
                 {
                     iFid++;
                     messageBox.AppendText($"\nRegister success");
-                    
-                    // Save fingerprint template to a array list and display in data grid view
-                    /*ListFpTemplate.Add(strFp);
-                    ListFpId.Add(iFid - 1);
-                    fpData.Rows.Clear();
-                    for (int i = 0; i < ListFpTemplate.Count; i++)
-                    {
-                        DataGridViewRow newRow = new DataGridViewRow();
-                        newRow.CreateCells(fpData);
-                        newRow.Cells[0].Value = ListFpId[i];
-                        newRow.Cells[1].Value = ListFpTemplate[i];
-                        fpData.Rows.Add(newRow);
-                    }*/
-
+                    messageBox.AppendText($"\nName: {inputName.Text}");
                     // Save fingerprint template to local database
                     fpData.Rows.Clear();
                     string value = "SELECT COUNT(*) FROM Table_fp";
@@ -333,7 +306,6 @@ namespace zkfpPrototype
                     {
                         SaveFpData(conn, strFp, count);
                         messageBox.AppendText($"\nDatabase update success");
-                        
                     }
                     catch (Exception ex)
                     {
@@ -353,13 +325,8 @@ namespace zkfpPrototype
             }
         }
 
-        private void VerificationCse(String strFp, SqlConnection conn)
+        private void VerificationCse()
         {
-            /*if (cbRegTmp <= 0)
-            {
-                messageBox.AppendText("\nYour fingerprint cannot found in the databse.\nPlease register your fingerprint first.");
-                return;
-            }*/
             if (bIdentify)
             {
                 int ret = zkfpErrOk;
@@ -382,17 +349,6 @@ namespace zkfpPrototype
                         return;
                     }
                 }
-                /*if (zkfpErrOk == ret)
-                {
-                    messageBox.AppendText($"\nIdentify fingerprint success, fid = {fid} , Score= {score} !");
-                    return;
-                }
-                else
-                {
-                    messageBox.AppendText($"\nIdentify fingerprint fail, Score= {score} !");
-                    return;
-                }*/
-
             }
             else
             {
@@ -415,16 +371,6 @@ namespace zkfpPrototype
                         return;
                     }
                 }
-                /*if (0 < ret)
-                {
-                    messageBox.AppendText($"\nMatch fingerprint success, Score= {ret} !");
-                    //return;
-                }
-                else
-                {
-                    messageBox.AppendText($"\nMatch fingerprint fail, Error code= {ret}");
-                    //return;
-                }*/
             }
         }
 
@@ -485,16 +431,16 @@ namespace zkfpPrototype
 
         private void BtnInsert_Click(object sender, EventArgs e)
         {
-            SqlConnection conn = new SqlConnection(localDatabase);
+            /*SqlConnection conn = new SqlConnection(localDatabase);
             conn.Open();
-            string id = inputId.Text;
+            //string id = inputId.Text;
             string fpTmp = inputTmp.Text;
             string query = "INSERT INTO Table_fp (Id, fp_template)";
             query += " VALUES (@Id, @fp_template)";
             try
             {
                 SqlCommand myCommand = new SqlCommand(query, conn);
-                myCommand.Parameters.AddWithValue("@Id", inputId.Text);
+                //myCommand.Parameters.AddWithValue("@Id", inputId.Text);
                 myCommand.Parameters.AddWithValue("@fp_template", inputTmp.Text);
                 myCommand.ExecuteNonQuery();
                 secondMessageBox.AppendText($"\nInsert successful");
@@ -503,13 +449,12 @@ namespace zkfpPrototype
             catch(Exception ex)
             {
                 secondMessageBox.AppendText($"\nError message: {ex.Message}");
-            }          
+            }  */        
         }
         
         private void SaveFpData(SqlConnection conn, string strFp, int count)
         {
             int id = count + 1;
-            string fpTmp = strFp;
             string query = "INSERT INTO Table_fp (Id, fp_template)";
             query += " VALUES (@Id, @fp_template)";
             try
@@ -539,12 +484,6 @@ namespace zkfpPrototype
             btnConnectDb.Enabled = true;
             btnDisconnect.Enabled = false;
         }
-
-        private void BtnVerifyTest_Click(object sender, EventArgs e)
-        {
-
-        }
-    }
-
-    
+        
+    }  
 }

@@ -47,17 +47,18 @@ namespace zkfpPrototype
             this.fpData = new System.Windows.Forms.DataGridView();
             this.fpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fpTemplate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.labelNumOfFp = new System.Windows.Forms.Label();
             this.fpControl = new System.Windows.Forms.TabControl();
             this.messageBox = new System.Windows.Forms.RichTextBox();
             this.mainControl = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
+            this.inputName = new System.Windows.Forms.TextBox();
+            this.lblName = new System.Windows.Forms.Label();
+            this.labelNumOfFp = new System.Windows.Forms.Label();
             this.secondPage = new System.Windows.Forms.TabPage();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
             this.btnInsert = new System.Windows.Forms.Button();
-            this.inputId = new System.Windows.Forms.TextBox();
             this.inputTmp = new System.Windows.Forms.TextBox();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
@@ -75,7 +76,7 @@ namespace zkfpPrototype
             this.btnInit.Location = new System.Drawing.Point(22, 40);
             this.btnInit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnInit.Name = "btnInit";
-            this.btnInit.Size = new System.Drawing.Size(100, 37);
+            this.btnInit.Size = new System.Drawing.Size(100, 40);
             this.btnInit.TabIndex = 0;
             this.btnInit.Text = "Initialize";
             this.btnInit.UseVisualStyleBackColor = true;
@@ -87,7 +88,7 @@ namespace zkfpPrototype
             this.btnOpen.Location = new System.Drawing.Point(22, 109);
             this.btnOpen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(100, 37);
+            this.btnOpen.Size = new System.Drawing.Size(100, 40);
             this.btnOpen.TabIndex = 0;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
@@ -99,7 +100,7 @@ namespace zkfpPrototype
             this.btnClose.Location = new System.Drawing.Point(221, 109);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 37);
+            this.btnClose.Size = new System.Drawing.Size(100, 40);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -108,12 +109,12 @@ namespace zkfpPrototype
             // btnMatch
             // 
             this.btnMatch.Enabled = false;
-            this.btnMatch.Location = new System.Drawing.Point(175, 443);
+            this.btnMatch.Location = new System.Drawing.Point(251, 439);
             this.btnMatch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMatch.Name = "btnMatch";
-            this.btnMatch.Size = new System.Drawing.Size(100, 37);
+            this.btnMatch.Size = new System.Drawing.Size(220, 50);
             this.btnMatch.TabIndex = 20;
-            this.btnMatch.Text = "Match(1:1)";
+            this.btnMatch.Text = "Verify";
             this.btnMatch.UseVisualStyleBackColor = true;
             this.btnMatch.Click += new System.EventHandler(this.BtnMatch_Click);
             // 
@@ -132,7 +133,7 @@ namespace zkfpPrototype
             // btnCreateTb
             // 
             this.btnCreateTb.Enabled = false;
-            this.btnCreateTb.Location = new System.Drawing.Point(51, 137);
+            this.btnCreateTb.Location = new System.Drawing.Point(51, 133);
             this.btnCreateTb.Margin = new System.Windows.Forms.Padding(4, 6, 4, 5);
             this.btnCreateTb.Name = "btnCreateTb";
             this.btnCreateTb.Size = new System.Drawing.Size(150, 50);
@@ -151,10 +152,10 @@ namespace zkfpPrototype
             // btnRegister
             // 
             this.btnRegister.Enabled = false;
-            this.btnRegister.Location = new System.Drawing.Point(28, 443);
+            this.btnRegister.Location = new System.Drawing.Point(10, 439);
             this.btnRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(100, 37);
+            this.btnRegister.Size = new System.Drawing.Size(220, 50);
             this.btnRegister.TabIndex = 18;
             this.btnRegister.Text = "Register";
             this.btnRegister.UseVisualStyleBackColor = true;
@@ -162,12 +163,12 @@ namespace zkfpPrototype
             // 
             // btnConnectDb
             // 
-            this.btnConnectDb.Location = new System.Drawing.Point(51, 41);
+            this.btnConnectDb.Location = new System.Drawing.Point(37, 35);
             this.btnConnectDb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnConnectDb.Name = "btnConnectDb";
-            this.btnConnectDb.Size = new System.Drawing.Size(150, 50);
+            this.btnConnectDb.Size = new System.Drawing.Size(100, 50);
             this.btnConnectDb.TabIndex = 18;
-            this.btnConnectDb.Text = "Connect Database";
+            this.btnConnectDb.Text = "Connect";
             this.btnConnectDb.UseVisualStyleBackColor = true;
             this.btnConnectDb.Click += new System.EventHandler(this.BtnConnectDb_Click);
             // 
@@ -176,7 +177,7 @@ namespace zkfpPrototype
             this.btnTerminate.Location = new System.Drawing.Point(221, 43);
             this.btnTerminate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTerminate.Name = "btnTerminate";
-            this.btnTerminate.Size = new System.Drawing.Size(100, 37);
+            this.btnTerminate.Size = new System.Drawing.Size(100, 40);
             this.btnTerminate.TabIndex = 0;
             this.btnTerminate.Text = "Terminate";
             this.btnTerminate.UseVisualStyleBackColor = true;
@@ -193,7 +194,6 @@ namespace zkfpPrototype
             // 
             // tabPageFp
             // 
-            this.tabPageFp.Controls.Add(this.btnVerify);
             this.tabPageFp.Controls.Add(this.btnMatch);
             this.tabPageFp.Controls.Add(this.btnRegister);
             this.tabPageFp.Controls.Add(this.picFpImg);
@@ -257,16 +257,6 @@ namespace zkfpPrototype
             this.fpTemplate.Name = "fpTemplate";
             this.fpTemplate.Width = 300;
             // 
-            // labelNumOfFp
-            // 
-            this.labelNumOfFp.AutoSize = true;
-            this.labelNumOfFp.Location = new System.Drawing.Point(350, 49);
-            this.labelNumOfFp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.labelNumOfFp.Name = "labelNumOfFp";
-            this.labelNumOfFp.Size = new System.Drawing.Size(241, 20);
-            this.labelNumOfFp.TabIndex = 9;
-            this.labelNumOfFp.Text = "Number of fingerprint registered: 0";
-            // 
             // fpControl
             // 
             this.fpControl.Controls.Add(this.tabPageFp);
@@ -293,7 +283,7 @@ namespace zkfpPrototype
             this.mainControl.Controls.Add(this.mainPage);
             this.mainControl.Controls.Add(this.secondPage);
             this.mainControl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainControl.Location = new System.Drawing.Point(-3, 2);
+            this.mainControl.Location = new System.Drawing.Point(4, 2);
             this.mainControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.mainControl.Name = "mainControl";
             this.mainControl.SelectedIndex = 0;
@@ -310,19 +300,47 @@ namespace zkfpPrototype
             this.mainPage.Controls.Add(this.fpControl);
             this.mainPage.Controls.Add(this.cmbIdx);
             this.mainPage.Controls.Add(this.messageBox);
+            this.mainPage.Controls.Add(this.inputName);
+            this.mainPage.Controls.Add(this.lblName);
             this.mainPage.Controls.Add(this.labelNumOfFp);
             this.mainPage.Location = new System.Drawing.Point(4, 29);
             this.mainPage.Name = "mainPage";
             this.mainPage.Size = new System.Drawing.Size(1095, 560);
             this.mainPage.TabIndex = 0;
-            this.mainPage.Text = "Default";
+            this.mainPage.Text = "Main";
+            // 
+            // inputName
+            // 
+            this.inputName.Location = new System.Drawing.Point(410, 115);
+            this.inputName.Name = "inputName";
+            this.inputName.Size = new System.Drawing.Size(144, 27);
+            this.inputName.TabIndex = 20;
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Location = new System.Drawing.Point(347, 118);
+            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(49, 20);
+            this.lblName.TabIndex = 9;
+            this.lblName.Text = "Name";
+            // 
+            // labelNumOfFp
+            // 
+            this.labelNumOfFp.AutoSize = true;
+            this.labelNumOfFp.Location = new System.Drawing.Point(347, 43);
+            this.labelNumOfFp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelNumOfFp.Name = "labelNumOfFp";
+            this.labelNumOfFp.Size = new System.Drawing.Size(241, 20);
+            this.labelNumOfFp.TabIndex = 9;
+            this.labelNumOfFp.Text = "Number of fingerprint registered: 0";
             // 
             // secondPage
             // 
             this.secondPage.Controls.Add(this.btnDisconnect);
             this.secondPage.Controls.Add(this.dbControl);
             this.secondPage.Controls.Add(this.btnConnectDb);
-            this.secondPage.Controls.Add(this.btnCreateTb);
             this.secondPage.Controls.Add(this.secondMessageBox);
             this.secondPage.Location = new System.Drawing.Point(4, 29);
             this.secondPage.Name = "secondPage";
@@ -333,12 +351,12 @@ namespace zkfpPrototype
             // btnDisconnect
             // 
             this.btnDisconnect.Enabled = false;
-            this.btnDisconnect.Location = new System.Drawing.Point(329, 41);
+            this.btnDisconnect.Location = new System.Drawing.Point(37, 121);
             this.btnDisconnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDisconnect.Name = "btnDisconnect";
-            this.btnDisconnect.Size = new System.Drawing.Size(170, 50);
+            this.btnDisconnect.Size = new System.Drawing.Size(100, 50);
             this.btnDisconnect.TabIndex = 19;
-            this.btnDisconnect.Text = "Disconnect Database";
+            this.btnDisconnect.Text = "Disconnect";
             this.btnDisconnect.UseVisualStyleBackColor = true;
             this.btnDisconnect.Click += new System.EventHandler(this.BtnDisconnect_Click);
             // 
@@ -372,13 +390,6 @@ namespace zkfpPrototype
             this.btnInsert.Text = "Insert";
             this.btnInsert.UseVisualStyleBackColor = true;
             this.btnInsert.Click += new System.EventHandler(this.BtnInsert_Click);
-            // 
-            // inputId
-            // 
-            this.inputId.Location = new System.Drawing.Point(81, 124);
-            this.inputId.Name = "inputId";
-            this.inputId.Size = new System.Drawing.Size(100, 22);
-            this.inputId.TabIndex = 20;
             // 
             // inputTmp
             // 
@@ -445,12 +456,12 @@ namespace zkfpPrototype
         private DataGridView fpData;
         private DataGridViewTextBoxColumn fpTemplate;
         private DataGridViewTextBoxColumn fpId;
-        private Label labelNumOfFp;
         private Button btnInsert;
         private TextBox inputTmp;
-        private TextBox inputId;
+        private TextBox inputName;
         private Button btnDisconnect;
-        
+        private Label lblName;
+        private Label labelNumOfFp;
     }
 }
 
