@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
@@ -242,7 +241,7 @@ namespace zkfpPrototype
 
         private void BtnMatch_Click(object sender, EventArgs e)
         {
-            messageBox.AppendText("\nStart matching your fingerprint (1:1)");
+            messageBox.AppendText("\nStart matching your fingerprint");
             IsRegister = false;
             if (bIdentify)
             {
@@ -254,6 +253,7 @@ namespace zkfpPrototype
         private void BtnVerify_Click(object sender, EventArgs e)
         {
             messageBox.AppendText("\nStart verifying your fingerprint (1:N)");
+            IsRegister = false;
             if (!bIdentify)
             {
                 bIdentify = true;
@@ -285,7 +285,6 @@ namespace zkfpPrototype
             String strBase64 = zkfp2.BlobToBase64(CapTmp, cbCapTmp);
             //byte[] blob = zkfp2.Base64ToBlob(strBase64);
             RegisterCount++;
-
             if (RegisterCount >= REGISTER_FINGER_COUNT)
             {
                 RegisterCount = 0;
@@ -294,7 +293,7 @@ namespace zkfpPrototype
                 {
                     iFid++;
                     messageBox.AppendText($"\nRegister success");
-                    messageBox.AppendText($"\nName: {inputName.Text}");
+                    //messageBox.AppendText($"\nName: {inputName.Text}");
                     // Save fingerprint template to local database
                     fpData.Rows.Clear();
                     string value = "SELECT COUNT(*) FROM Table_fp";
@@ -392,8 +391,6 @@ namespace zkfpPrototype
                 btnConnectDb.Enabled = false;
                 btnDisconnect.Enabled = true;
                 ReadFpData(conn);
-                //conn.Close();
-                //return;
             }
             catch (Exception ex)
             {
@@ -484,6 +481,38 @@ namespace zkfpPrototype
             btnConnectDb.Enabled = true;
             btnDisconnect.Enabled = false;
         }
-        
+
+        private void BtnTestConnection_Click(object sender, EventArgs e)
+        {
+            secondMessageBox.AppendText("\nConnecting...");
+            string datasource = tbDataSource.Text;//server name
+            string dbName = tbDbName.Text; //database name
+            string username = tbUserName.Text; //username
+            string password = tbPassword.Text; //password
+            string connString = $@"Data Source= {datasource};Initial Catalog=
+                               {dbName};Persist Security Info=True;User ID= {username};Password= {password}";
+            SqlConnection conn = new SqlConnection(connString);
+            try
+            {
+                conn.Open();
+                secondMessageBox.AppendText("\nConnect successful");
+                tbDataSource.Enabled = false;
+                tbDbName.Enabled = false;
+                tbUserName.Enabled = false;
+                tbPassword.Enabled = false;
+
+            }
+            catch (Exception ex)
+            {
+                secondMessageBox.AppendText($"\nDatabase connect fail, Error message: {ex.Message}");
+            }
+            conn.Close();
+        }
+
+        private void messageBox_TextChanged(object sender, EventArgs e)
+        {
+            messageBox.SelectionStart = messageBox.Text.Length;
+            messageBox.ScrollToCaret();
+        }
     }  
 }
