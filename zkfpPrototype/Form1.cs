@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using libzkfpcsharp;
 using Sample;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace zkfpPrototype
 {
@@ -21,6 +22,10 @@ namespace zkfpPrototype
         SqlConnection conn = new SqlConnection();
         private static ArrayList ListFpTemplate = new ArrayList();
         private static ArrayList ListId = new ArrayList();
+        private static ArrayList ListTime = new ArrayList();
+        private static ArrayList ListEmpId = new ArrayList();
+        private static ArrayList ListName = new ArrayList();
+        private static ArrayList ListEmpId1 = new ArrayList();
         IntPtr mDevHandle = IntPtr.Zero;
         IntPtr mDBHandle = IntPtr.Zero;
         IntPtr FormHandle = IntPtr.Zero;
@@ -229,13 +234,21 @@ namespace zkfpPrototype
 
         private void BtnRegister_Click(object sender, EventArgs e)
         {
-            messageBox.AppendText("\nStart register");
-            if (!IsRegister)
+            string userId = tbUserInputId.Text;
+            if (userId == "")
             {
-                IsRegister = true;
-                RegisterCount = 0;
-                cbRegTmp = 0;
-                messageBox.AppendText("\nPlease press your finger 3 times!");
+                messageBox.AppendText($"\nPlease enter your id!");
+            }
+            else
+            {
+                messageBox.AppendText("\nStart register");
+                if (!IsRegister)
+                {
+                    IsRegister = true;
+                    RegisterCount = 0;
+                    cbRegTmp = 0;
+                    messageBox.AppendText("\nPlease press your finger 3 times!");
+                }
             }
         }
 
@@ -264,6 +277,9 @@ namespace zkfpPrototype
         private void RegistrationCase(string strFp, SqlConnection conn)
         {
             int ret = zkfpErrOk;
+            string userId = tbUserInputId.Text;
+            int empId = Int32.Parse(userId);
+
             //Check fingerprint already register or not
             for (int i = 0; i < ListFpTemplate.Count; i++)
             {
@@ -271,7 +287,9 @@ namespace zkfpPrototype
                 ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
                 if (0 < ret)
                 {
-                    messageBox.AppendText($"\nId: {ListId[i]}\nStatus: Registered\nScore: {ret}");                    
+                    DateTime regTime = (DateTime)ListTime[i];
+                    messageBox.AppendText($"\nId: {ListId[i]}\nStatus: Registered\nScore: {ret}\nTime registered: {regTime.ToString("dd/MM/yyyy HH:mm:ss")}");
+                    messageBox.AppendText($"\nEmployee Id: {ListEmpId1[i]}\nName: {ListName[i]}\nRegistered fingerprint: ");
                     return;
                 }           
             }
@@ -293,7 +311,7 @@ namespace zkfpPrototype
                 {
                     iFid++;
                     messageBox.AppendText($"\nRegister success");
-                    //messageBox.AppendText($"\nName: {inputName.Text}");
+                    
                     // Save fingerprint template to local database
                     fpData.Rows.Clear();
                     string value = "SELECT COUNT(*) FROM Table_fp";
@@ -381,7 +399,7 @@ namespace zkfpPrototype
                                {database};Persist Security Info=True;User ID= {username};Password= {password}";
             
             //create instanace of database connection
-            SqlConnection conn = new SqlConnection(localDatabase);
+            conn = new SqlConnection(localDatabase);
             
             //open connection
             try
@@ -391,6 +409,7 @@ namespace zkfpPrototype
                 btnConnectDb.Enabled = false;
                 btnDisconnect.Enabled = true;
                 ReadFpData(conn);
+                ReadEmpData(conn);
             }
             catch (Exception ex)
             {
@@ -400,26 +419,50 @@ namespace zkfpPrototype
 
         private void ReadFpData(SqlConnection conn)
         {
-            SqlCommand myCommand = new SqlCommand("select * from Table_fp", conn);
-            SqlDataReader myReader = myCommand.ExecuteReader();
-            btnCreateTb.Enabled = true;
-            
+            string userId = tbUserInputId.Text;
+            int empId = Int32.Parse(userId);
+            string fp = $"select * from Table_fp where emp_id = {empId}";
+            SqlCommand fpCommand = new SqlCommand(fp, conn);
+            SqlDataReader fpReader = fpCommand.ExecuteReader();
             fpData.Rows.Clear();
-            while (myReader.Read())
+            while (fpReader.Read())
             {
                 DataGridViewRow newRow = new DataGridViewRow();
                 newRow.CreateCells(fpData);
-                newRow.Cells[0].Value = myReader["Id"];
-                newRow.Cells[1].Value = myReader["fp_template"];
-                ListId.Add(myReader["Id"]);
-                ListFpTemplate.Add(myReader["fp_template"]);
+                newRow.Cells[0].Value = fpReader["Id"];
+                newRow.Cells[1].Value = fpReader["fp_template"];
+                newRow.Cells[2].Value = fpReader["time_registered"];
+                newRow.Cells[3].Value = fpReader["emp_id"];
+                ListId.Add(fpReader["Id"]);
+                ListFpTemplate.Add(fpReader["fp_template"]);
+                ListTime.Add(fpReader["time_registered"]);
+                ListEmpId1.Add(fpReader["emp_id"]);
                 fpData.Rows.Add(newRow);
             }
             labelNumOfFp.Text = $"Number of fingerprint registered: {ListFpTemplate.Count}";
             conn.Close();
         }
 
-        private void BtnCreateTb_Click(object sender, EventArgs e)
+        private void ReadEmpData(SqlConnection conn)
+        {
+            conn.Open();
+            SqlCommand empComm = new SqlCommand("select * from Table_employee", conn);
+            SqlDataReader empReader = empComm.ExecuteReader();
+            empData.Rows.Clear();
+            while (empReader.Read())
+            {
+                DataGridViewRow empRow = new DataGridViewRow();
+                empRow.CreateCells(empData);
+                empRow.Cells[0].Value = empReader["Id"];
+                empRow.Cells[1].Value = empReader["emp_name"];
+                ListEmpId.Add(empReader["Id"]);
+                ListName.Add(empReader["emp_name"]);
+                empData.Rows.Add(empRow);
+            }
+            conn.Close();
+        }
+
+        private void BtnAddEmp_Click(object sender, EventArgs e)
         {
             var myForm = new Form3();
             myForm.Show();
@@ -452,13 +495,16 @@ namespace zkfpPrototype
         private void SaveFpData(SqlConnection conn, string strFp, int count)
         {
             int id = count + 1;
-            string query = "INSERT INTO Table_fp (Id, fp_template)";
-            query += " VALUES (@Id, @fp_template)";
+            string query = "INSERT INTO Table_fp (Id, fp_template, time_registered)";
+            query += " VALUES (@Id, @fp_template, @time_registered)";
+            DateTime currentTime = DateTime.Now;
+            messageBox.AppendText($"\nCurrent time: {currentTime}");
             try
             {
                 SqlCommand myCommand = new SqlCommand(query, conn);
                 myCommand.Parameters.AddWithValue("@Id", id);
                 myCommand.Parameters.AddWithValue("@fp_template", strFp);
+                myCommand.Parameters.AddWithValue("@time_registered", currentTime);
                 myCommand.ExecuteNonQuery();
                 ReadFpData(conn);
                 labelNumOfFp.Text = $"Number of fingerprint registered: {id}";
@@ -513,6 +559,40 @@ namespace zkfpPrototype
         {
             messageBox.SelectionStart = messageBox.Text.Length;
             messageBox.ScrollToCaret();
+        }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            conn = new SqlConnection(localDatabase);
+            string empName = tbName.Text;
+            string id = tbId.Text;
+            int empId = Int32.Parse(id);
+            string query = "INSERT INTO Table_employee (Id, emp_name)";
+            query += " VALUES (@Id, @emp_name)";
+            try
+            {
+                conn.Open();
+                SqlCommand myCommand = new SqlCommand(query, conn);
+                myCommand.Parameters.AddWithValue("@Id", empId);
+                myCommand.Parameters.AddWithValue("@emp_name", empName);
+                myCommand.ExecuteNonQuery();
+                secondMessageBox.AppendText($"\nRegister success\nEmployee Id: {id}\nEmployee Name: {empName}");
+                ReadEmpData(conn);
+            }
+            catch (Exception ex)
+            {
+                secondMessageBox.AppendText($"\nError message: {ex.Message}");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            tbId.Text = "";
+            tbName.Text = "";
         }
     }  
 }

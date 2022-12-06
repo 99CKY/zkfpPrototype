@@ -33,11 +33,9 @@ namespace zkfpPrototype
             this.save = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
             this.lbName = new System.Windows.Forms.Label();
-            this.lbDataType = new System.Windows.Forms.Label();
+            this.lbId = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
-            this.tbDataType = new System.Windows.Forms.TextBox();
-            this.cmbName = new System.Windows.Forms.ComboBox();
-            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.tbId = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // save
@@ -67,39 +65,31 @@ namespace zkfpPrototype
             // 
             this.lbName.AutoSize = true;
             this.lbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbName.Location = new System.Drawing.Point(92, 82);
+            this.lbName.Location = new System.Drawing.Point(117, 123);
             this.lbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbName.Name = "lbName";
-            this.lbName.Size = new System.Drawing.Size(127, 23);
+            this.lbName.Size = new System.Drawing.Size(102, 19);
             this.lbName.TabIndex = 2;
-            this.lbName.Text = "Column name: ";
+            this.lbName.Text = "Employee name: ";
             // 
-            // lbDataType
+            // lbId
             // 
-            this.lbDataType.AutoSize = true;
-            this.lbDataType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbDataType.Location = new System.Drawing.Point(143, 132);
-            this.lbDataType.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbDataType.Name = "lbDataType";
-            this.lbDataType.Size = new System.Drawing.Size(93, 23);
-            this.lbDataType.TabIndex = 3;
-            this.lbDataType.Text = "Data type: ";
+            this.lbId.AutoSize = true;
+            this.lbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbId.Location = new System.Drawing.Point(143, 61);
+            this.lbId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbId.Name = "lbId";
+            this.lbId.Size = new System.Drawing.Size(76, 19);
+            this.lbId.TabIndex = 3;
+            this.lbId.Text = "Employee Id: ";
             // 
             // tbName
             // 
             this.tbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(256, 75);
+            this.tbName.Location = new System.Drawing.Point(256, 117);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(119, 30);
+            this.tbName.Size = new System.Drawing.Size(119, 25);
             this.tbName.TabIndex = 4;
-            // 
-            // tbDataType
-            // 
-            this.tbDataType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDataType.Location = new System.Drawing.Point(256, 129);
-            this.tbDataType.Name = "tbDataType";
-            this.tbDataType.Size = new System.Drawing.Size(100, 30);
-            this.tbDataType.TabIndex = 5;
             // 
             // cmbName
             // 
@@ -107,35 +97,31 @@ namespace zkfpPrototype
             this.cmbName.Location = new System.Drawing.Point(390, 78);
             this.cmbName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbName.Name = "cmbName";
-            this.cmbName.Size = new System.Drawing.Size(119, 24);
+            this.cmbName.Size = new System.Drawing.Size(119, 21);
             this.cmbName.TabIndex = 10;
             // 
-            // cmbType
+            // tbId
             // 
-            this.cmbType.FormattingEnabled = true;
-            this.cmbType.Items.AddRange(new object[] {
-            "nvarchar(3000)"});
-            this.cmbType.Location = new System.Drawing.Point(256, 132);
-            this.cmbType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(119, 27);
-            this.cmbType.TabIndex = 10;
-            this.cmbType.Text = "nvarchar(3000)";
+            this.tbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbId.Location = new System.Drawing.Point(256, 58);
+            this.tbId.Name = "tbId";
+            this.tbId.Size = new System.Drawing.Size(119, 25);
+            this.tbId.TabIndex = 5;
             // 
             // Form3
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(597, 449);
+            this.ClientSize = new System.Drawing.Size(599, 457);
+            this.Controls.Add(this.tbId);
             this.Controls.Add(this.save);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.lbName);
-            this.Controls.Add(this.lbDataType);
+            this.Controls.Add(this.lbId);
             this.Controls.Add(this.tbName);
-            this.Controls.Add(this.cmbType);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
@@ -155,10 +141,9 @@ namespace zkfpPrototype
         private Button save;
         private Button cancel;
         private Label lbName;
-        private Label lbDataType;
+        private Label lbId;
         private TextBox tbName;
-        private TextBox tbDataType;
         private ComboBox cmbName;
-        private ComboBox cmbType;
+        private TextBox tbId;
     }
 }
