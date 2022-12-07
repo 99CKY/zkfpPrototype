@@ -57,6 +57,8 @@ namespace zkfpPrototype
             this.messageBox = new System.Windows.Forms.RichTextBox();
             this.mainControl = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
+            this.tbUserInputId = new System.Windows.Forms.TextBox();
+            this.lblUserInput = new System.Windows.Forms.Label();
             this.labelNumOfFp = new System.Windows.Forms.Label();
             this.secondPage = new System.Windows.Forms.TabPage();
             this.btnTestConnection = new System.Windows.Forms.Button();
@@ -80,10 +82,7 @@ namespace zkfpPrototype
             this.tbId = new System.Windows.Forms.TextBox();
             this.inputName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.btnInsert = new System.Windows.Forms.Button();
             this.inputTmp = new System.Windows.Forms.TextBox();
-            this.lblUserInput = new System.Windows.Forms.Label();
-            this.tbUserInputId = new System.Windows.Forms.TextBox();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -166,6 +165,7 @@ namespace zkfpPrototype
             this.btnAddEmp.TabIndex = 0;
             this.btnAddEmp.Text = "Add Employee";
             this.btnAddEmp.UseVisualStyleBackColor = true;
+            this.btnAddEmp.Visible = false;
             this.btnAddEmp.Click += new System.EventHandler(this.BtnAddEmp_Click);
             // 
             // btnUploadFp
@@ -215,7 +215,7 @@ namespace zkfpPrototype
             this.cmbIdx.Location = new System.Drawing.Point(142, 115);
             this.cmbIdx.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cmbIdx.Name = "cmbIdx";
-            this.cmbIdx.Size = new System.Drawing.Size(52, 23);
+            this.cmbIdx.Size = new System.Drawing.Size(52, 28);
             this.cmbIdx.TabIndex = 10;
             // 
             // tabPageFp
@@ -223,11 +223,11 @@ namespace zkfpPrototype
             this.tabPageFp.Controls.Add(this.btnMatch);
             this.tabPageFp.Controls.Add(this.btnRegister);
             this.tabPageFp.Controls.Add(this.picFpImg);
-            this.tabPageFp.Location = new System.Drawing.Point(4, 24);
+            this.tabPageFp.Location = new System.Drawing.Point(4, 29);
             this.tabPageFp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageFp.Name = "tabPageFp";
             this.tabPageFp.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageFp.Size = new System.Drawing.Size(479, 504);
+            this.tabPageFp.Size = new System.Drawing.Size(479, 499);
             this.tabPageFp.TabIndex = 0;
             this.tabPageFp.Text = "Fingerprint image";
             this.tabPageFp.UseVisualStyleBackColor = true;
@@ -247,11 +247,11 @@ namespace zkfpPrototype
             // tabPageDb
             // 
             this.tabPageDb.Controls.Add(this.fpData);
-            this.tabPageDb.Location = new System.Drawing.Point(4, 24);
+            this.tabPageDb.Location = new System.Drawing.Point(4, 29);
             this.tabPageDb.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageDb.Name = "tabPageDb";
             this.tabPageDb.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageDb.Size = new System.Drawing.Size(479, 504);
+            this.tabPageDb.Size = new System.Drawing.Size(479, 499);
             this.tabPageDb.TabIndex = 0;
             this.tabPageDb.Text = "Fingerprint Data";
             this.tabPageDb.UseVisualStyleBackColor = true;
@@ -262,12 +262,13 @@ namespace zkfpPrototype
             this.fpData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.fpId,
             this.fpTemplate,
-            this.time_registered, this.empId1});
+            this.time_registered,
+            this.empId1});
             this.fpData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fpData.Location = new System.Drawing.Point(4, 5);
             this.fpData.Name = "fpData";
             this.fpData.RowHeadersWidth = 51;
-            this.fpData.Size = new System.Drawing.Size(471, 494);
+            this.fpData.Size = new System.Drawing.Size(471, 489);
             this.fpData.TabIndex = 883;
             // 
             // fpId
@@ -289,6 +290,7 @@ namespace zkfpPrototype
             this.time_registered.HeaderText = "timeRegister";
             this.time_registered.MinimumWidth = 6;
             this.time_registered.Name = "time_registered";
+            this.time_registered.Width = 125;
             // 
             // empId1
             // 
@@ -300,11 +302,11 @@ namespace zkfpPrototype
             // tabPageEmp
             // 
             this.tabPageEmp.Controls.Add(this.empData);
-            this.tabPageEmp.Location = new System.Drawing.Point(4, 24);
+            this.tabPageEmp.Location = new System.Drawing.Point(4, 29);
             this.tabPageEmp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPageEmp.Name = "tabPageEmp";
             this.tabPageEmp.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageEmp.Size = new System.Drawing.Size(479, 504);
+            this.tabPageEmp.Size = new System.Drawing.Size(479, 499);
             this.tabPageEmp.TabIndex = 0;
             this.tabPageEmp.Text = "Employee Data";
             this.tabPageEmp.UseVisualStyleBackColor = true;
@@ -319,7 +321,7 @@ namespace zkfpPrototype
             this.empData.Location = new System.Drawing.Point(4, 5);
             this.empData.Name = "empData";
             this.empData.RowHeadersWidth = 51;
-            this.empData.Size = new System.Drawing.Size(471, 494);
+            this.empData.Size = new System.Drawing.Size(471, 489);
             this.empData.TabIndex = 883;
             // 
             // empId
@@ -384,11 +386,27 @@ namespace zkfpPrototype
             this.mainPage.Controls.Add(this.cmbIdx);
             this.mainPage.Controls.Add(this.messageBox);
             this.mainPage.Controls.Add(this.labelNumOfFp);
-            this.mainPage.Location = new System.Drawing.Point(4, 24);
+            this.mainPage.Location = new System.Drawing.Point(4, 29);
             this.mainPage.Name = "mainPage";
-            this.mainPage.Size = new System.Drawing.Size(1095, 565);
+            this.mainPage.Size = new System.Drawing.Size(1095, 560);
             this.mainPage.TabIndex = 0;
             this.mainPage.Text = "Fingerprint";
+            // 
+            // tbUserInputId
+            // 
+            this.tbUserInputId.Location = new System.Drawing.Point(507, 115);
+            this.tbUserInputId.Name = "tbUserInputId";
+            this.tbUserInputId.Size = new System.Drawing.Size(51, 27);
+            this.tbUserInputId.TabIndex = 19;
+            // 
+            // lblUserInput
+            // 
+            this.lblUserInput.AutoSize = true;
+            this.lblUserInput.Location = new System.Drawing.Point(347, 118);
+            this.lblUserInput.Name = "lblUserInput";
+            this.lblUserInput.Size = new System.Drawing.Size(197, 20);
+            this.lblUserInput.TabIndex = 18;
+            this.lblUserInput.Text = "Register fingerprint for ID = ";
             // 
             // labelNumOfFp
             // 
@@ -396,7 +414,7 @@ namespace zkfpPrototype
             this.labelNumOfFp.Location = new System.Drawing.Point(347, 43);
             this.labelNumOfFp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelNumOfFp.Name = "labelNumOfFp";
-            this.labelNumOfFp.Size = new System.Drawing.Size(191, 15);
+            this.labelNumOfFp.Size = new System.Drawing.Size(241, 20);
             this.labelNumOfFp.TabIndex = 9;
             this.labelNumOfFp.Text = "Number of fingerprint registered: 0";
             // 
@@ -416,9 +434,9 @@ namespace zkfpPrototype
             this.secondPage.Controls.Add(this.btnConnectDb);
             this.secondPage.Controls.Add(this.secondMessageBox);
             this.secondPage.Controls.Add(this.btnAddEmp);
-            this.secondPage.Location = new System.Drawing.Point(4, 24);
+            this.secondPage.Location = new System.Drawing.Point(4, 29);
             this.secondPage.Name = "secondPage";
-            this.secondPage.Size = new System.Drawing.Size(1095, 565);
+            this.secondPage.Size = new System.Drawing.Size(1095, 560);
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
@@ -437,7 +455,7 @@ namespace zkfpPrototype
             // 
             this.tbDataSource.Location = new System.Drawing.Point(426, 19);
             this.tbDataSource.Name = "tbDataSource";
-            this.tbDataSource.Size = new System.Drawing.Size(165, 23);
+            this.tbDataSource.Size = new System.Drawing.Size(165, 27);
             this.tbDataSource.TabIndex = 27;
             this.tbDataSource.Text = "DBSERV\\SQL2K8";
             this.tbDataSource.Visible = false;
@@ -446,7 +464,7 @@ namespace zkfpPrototype
             // 
             this.tbUserName.Location = new System.Drawing.Point(426, 118);
             this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(165, 23);
+            this.tbUserName.Size = new System.Drawing.Size(165, 27);
             this.tbUserName.TabIndex = 26;
             this.tbUserName.Text = "fis";
             this.tbUserName.Visible = false;
@@ -455,7 +473,7 @@ namespace zkfpPrototype
             // 
             this.tbDbName.Location = new System.Drawing.Point(426, 69);
             this.tbDbName.Name = "tbDbName";
-            this.tbDbName.Size = new System.Drawing.Size(165, 23);
+            this.tbDbName.Size = new System.Drawing.Size(165, 27);
             this.tbDbName.TabIndex = 25;
             this.tbDbName.Text = "testScan";
             this.tbDbName.Visible = false;
@@ -464,7 +482,7 @@ namespace zkfpPrototype
             // 
             this.tbPassword.Location = new System.Drawing.Point(426, 162);
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(165, 23);
+            this.tbPassword.Size = new System.Drawing.Size(165, 27);
             this.tbPassword.TabIndex = 24;
             this.tbPassword.Text = "fis";
             this.tbPassword.Visible = false;
@@ -474,7 +492,7 @@ namespace zkfpPrototype
             this.lblPassword.AutoSize = true;
             this.lblPassword.Location = new System.Drawing.Point(300, 170);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(57, 15);
+            this.lblPassword.Size = new System.Drawing.Size(70, 20);
             this.lblPassword.TabIndex = 23;
             this.lblPassword.Text = "Password";
             this.lblPassword.Visible = false;
@@ -484,7 +502,7 @@ namespace zkfpPrototype
             this.lblUserName.AutoSize = true;
             this.lblUserName.Location = new System.Drawing.Point(300, 122);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(60, 15);
+            this.lblUserName.Size = new System.Drawing.Size(75, 20);
             this.lblUserName.TabIndex = 22;
             this.lblUserName.Text = "Username";
             this.lblUserName.Visible = false;
@@ -494,7 +512,7 @@ namespace zkfpPrototype
             this.lblDbName.AutoSize = true;
             this.lblDbName.Location = new System.Drawing.Point(300, 73);
             this.lblDbName.Name = "lblDbName";
-            this.lblDbName.Size = new System.Drawing.Size(88, 15);
+            this.lblDbName.Size = new System.Drawing.Size(113, 20);
             this.lblDbName.TabIndex = 21;
             this.lblDbName.Text = "Database name";
             this.lblDbName.Visible = false;
@@ -504,7 +522,7 @@ namespace zkfpPrototype
             this.lblDataSource.AutoSize = true;
             this.lblDataSource.Location = new System.Drawing.Point(300, 20);
             this.lblDataSource.Name = "lblDataSource";
-            this.lblDataSource.Size = new System.Drawing.Size(69, 15);
+            this.lblDataSource.Size = new System.Drawing.Size(88, 20);
             this.lblDataSource.TabIndex = 20;
             this.lblDataSource.Text = "Data source";
             this.lblDataSource.Visible = false;
@@ -551,9 +569,9 @@ namespace zkfpPrototype
             this.thirdPage.Controls.Add(this.lbId);
             this.thirdPage.Controls.Add(this.tbName);
             this.thirdPage.Controls.Add(this.tbId);
-            this.thirdPage.Location = new System.Drawing.Point(4, 24);
+            this.thirdPage.Location = new System.Drawing.Point(4, 29);
             this.thirdPage.Name = "thirdPage";
-            this.thirdPage.Size = new System.Drawing.Size(1095, 565);
+            this.thirdPage.Size = new System.Drawing.Size(1095, 560);
             this.thirdPage.TabIndex = 0;
             this.thirdPage.Text = "Employee";
             // 
@@ -587,7 +605,7 @@ namespace zkfpPrototype
             this.lbName.Location = new System.Drawing.Point(117, 123);
             this.lbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbName.Name = "lbName";
-            this.lbName.Size = new System.Drawing.Size(113, 19);
+            this.lbName.Size = new System.Drawing.Size(141, 23);
             this.lbName.TabIndex = 2;
             this.lbName.Text = "Employee name: ";
             // 
@@ -598,7 +616,7 @@ namespace zkfpPrototype
             this.lbId.Location = new System.Drawing.Point(143, 61);
             this.lbId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbId.Name = "lbId";
-            this.lbId.Size = new System.Drawing.Size(91, 19);
+            this.lbId.Size = new System.Drawing.Size(113, 23);
             this.lbId.TabIndex = 3;
             this.lbId.Text = "Employee Id: ";
             // 
@@ -607,7 +625,7 @@ namespace zkfpPrototype
             this.tbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbName.Location = new System.Drawing.Point(256, 117);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(119, 25);
+            this.tbName.Size = new System.Drawing.Size(119, 30);
             this.tbName.TabIndex = 4;
             // 
             // tbId
@@ -615,14 +633,14 @@ namespace zkfpPrototype
             this.tbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbId.Location = new System.Drawing.Point(256, 58);
             this.tbId.Name = "tbId";
-            this.tbId.Size = new System.Drawing.Size(119, 25);
+            this.tbId.Size = new System.Drawing.Size(119, 30);
             this.tbId.TabIndex = 5;
             // 
             // inputName
             // 
             this.inputName.Location = new System.Drawing.Point(410, 115);
             this.inputName.Name = "inputName";
-            this.inputName.Size = new System.Drawing.Size(144, 20);
+            this.inputName.Size = new System.Drawing.Size(144, 22);
             this.inputName.TabIndex = 20;
             // 
             // lblName
@@ -634,43 +652,18 @@ namespace zkfpPrototype
             this.lblName.Size = new System.Drawing.Size(49, 20);
             this.lblName.TabIndex = 9;
             this.lblName.Text = "Name";
-            // 
-            // btnInsert
-            // 
-            this.btnInsert.Location = new System.Drawing.Point(331, 124);
-            this.btnInsert.Name = "btnInsert";
-            this.btnInsert.Size = new System.Drawing.Size(150, 50);
-            this.btnInsert.TabIndex = 19;
-            this.btnInsert.Text = "Insert";
-            this.btnInsert.UseVisualStyleBackColor = true;
-            this.btnInsert.Click += new System.EventHandler(this.BtnInsert_Click);
+            
             // 
             // inputTmp
             // 
             this.inputTmp.Location = new System.Drawing.Point(81, 179);
             this.inputTmp.Name = "inputTmp";
-            this.inputTmp.Size = new System.Drawing.Size(100, 20);
+            this.inputTmp.Size = new System.Drawing.Size(100, 22);
             this.inputTmp.TabIndex = 21;
-            // 
-            // lblUserInput
-            // 
-            this.lblUserInput.AutoSize = true;
-            this.lblUserInput.Location = new System.Drawing.Point(347, 118);
-            this.lblUserInput.Name = "lblUserInput";
-            this.lblUserInput.Size = new System.Drawing.Size(154, 15);
-            this.lblUserInput.TabIndex = 18;
-            this.lblUserInput.Text = "Register fingerprint for ID = ";
-            // 
-            // tbUserInputId
-            // 
-            this.tbUserInputId.Location = new System.Drawing.Point(507, 115);
-            this.tbUserInputId.Name = "tbUserInputId";
-            this.tbUserInputId.Size = new System.Drawing.Size(51, 23);
-            this.tbUserInputId.TabIndex = 19;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
@@ -737,7 +730,7 @@ namespace zkfpPrototype
         private DataGridView empData;
         private DataGridViewTextBoxColumn empId;
         private DataGridViewTextBoxColumn empName;
-        private Button btnInsert;
+        
         private TextBox inputTmp;
         private TextBox inputName;
         private Button btnDisconnect;
