@@ -297,6 +297,49 @@ namespace zkfpPrototype
             int ret = zkfpErrOk;
             conn.Open();
             ReadFpData(conn);
+            ReadAllFpData(conn);
+            for (int i = 0; i < ListAllFpTemplate.Count; i++)
+            {
+                RegTmp = Convert.FromBase64String(ListAllFpTemplate[i].ToString());
+                ret = zkfp2.DBMatch(mDBHandle, CapTmp, RegTmp);
+                DateTime regTime = (DateTime)ListAllTime[i];
+                if (0 < ret)
+                {
+                    if (ListEmpId.Contains(ListAllEmpId[i]))
+                    {
+                        messageBox.AppendText($"\nFingerprint Id: {ListAllId[i]}\nEmployee Id: {ListAllEmpId[i]}\nName: {ListName[(int)ListAllEmpId[i] - 1]}\nStatus: Registered\nScore: {ret}\nTime registered: {regTime:dd/MM/yyyy HH:mm:ss}");
+                        return;
+                    }
+                }
+                
+            }
+            if (ListId.Count == 10)
+            {
+                messageBox.AppendText($"Your fingerprint already finish registered");
+                return;
+            }
+            if (ret == 0)
+            { 
+                messageBox.AppendText($"\nRegister success");
+                fpData.Rows.Clear();
+                conn.Open();
+                try
+                {
+                    ReadFpData(conn);
+                    SaveFpData(conn, strFp);
+                    messageBox.AppendText($"\nDatabase update success");
+                }
+                catch (Exception ex)
+                {
+                    messageBox.AppendText($"\nSave data fail, Error message: {ex.Message}");
+                }
+            }
+            IsRegister = false;
+            return;
+            
+            /*int ret = zkfpErrOk;
+            conn.Open();
+            ReadFpData(conn);
             //Check fingerprint already register or not
             for (int i = 0; i < ListFpTemplate.Count; i++)
             {
@@ -313,7 +356,7 @@ namespace zkfpPrototype
                     }
                     /*else
                         messageBox.AppendText($"\nFingerprint already by {ListName[i]}");
-                        return;*/
+                        return;*//*
                 //}
                 
                 if (ListId.Count > 10)
@@ -369,7 +412,7 @@ namespace zkfpPrototype
             else
             {
                 messageBox.AppendText($"\nRemaining {REGISTER_FINGER_COUNT - RegisterCount} times fingerprint");
-            }
+            }*/
         }
 
         private void VerificationCse(SqlConnection conn)
@@ -521,7 +564,7 @@ namespace zkfpPrototype
         }
 
         
-        private void SaveFpData(SqlConnection conn, string strFp, int count)
+        private void SaveFpData(SqlConnection conn, string strFp)
         {
             conn.Open();
             int id = ListFpTemplate.Count + 1;
@@ -538,7 +581,7 @@ namespace zkfpPrototype
                 myCommand.Parameters.AddWithValue("@time_registered", currentTime);
                 myCommand.Parameters.AddWithValue("@emp_id", empId);
                 myCommand.ExecuteNonQuery();
-                labelNumOfFp.Text = $"Number of fingerprint registered: {count + 1}";
+                labelNumOfFp.Text = $"Number of fingerprint registered: {id}";
                 
             }
             catch (Exception ex)
@@ -551,8 +594,6 @@ namespace zkfpPrototype
                 ReadAllFpData(conn);
             }
         }
-
-
 
         private void BtnDisconnect_Click(object sender, EventArgs e)
         {
