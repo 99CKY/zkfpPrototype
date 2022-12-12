@@ -35,7 +35,6 @@ namespace zkfpPrototype
             this.btnClose = new System.Windows.Forms.Button();
             this.btnMatch = new System.Windows.Forms.Button();
             this.btnVerify = new System.Windows.Forms.Button();
-            this.btnAddEmp = new System.Windows.Forms.Button();
             this.btnUploadFp = new System.Windows.Forms.Button();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnConnectDb = new System.Windows.Forms.Button();
@@ -80,6 +79,22 @@ namespace zkfpPrototype
             this.lbId = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
             this.tbId = new System.Windows.Forms.TextBox();
+            this.devicePage = new System.Windows.Forms.TabPage();
+            this.btnDisconnectDevice = new System.Windows.Forms.Button();
+            this.btnUploadData = new System.Windows.Forms.Button();
+            this.btnDownloadData = new System.Windows.Forms.Button();
+            this.btnConnectDevice = new System.Windows.Forms.Button();
+            this.lblIp = new System.Windows.Forms.Label();
+            this.lblPort = new System.Windows.Forms.Label();
+            this.tbIp = new System.Windows.Forms.TextBox();
+            this.tbPort = new System.Windows.Forms.TextBox();
+            this.deviceMessageBox = new System.Windows.Forms.RichTextBox();
+            this.deviceControl = new System.Windows.Forms.TabControl();
+            this.deviceDataPage = new System.Windows.Forms.TabPage();
+            this.deviceData = new System.Windows.Forms.DataGridView();
+            this.deviceFpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.deviceFpTmp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.devicEmpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inputName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
@@ -95,6 +110,10 @@ namespace zkfpPrototype
             this.secondPage.SuspendLayout();
             this.dbControl.SuspendLayout();
             this.thirdPage.SuspendLayout();
+            this.devicePage.SuspendLayout();
+            this.deviceControl.SuspendLayout();
+            this.deviceDataPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deviceData)).BeginInit();
             this.SuspendLayout();
             // 
             // btnInit
@@ -155,18 +174,6 @@ namespace zkfpPrototype
             this.btnVerify.Text = "Verify(1:N)";
             this.btnVerify.UseVisualStyleBackColor = true;
             this.btnVerify.Click += new System.EventHandler(this.BtnVerify_Click);
-            // 
-            // btnAddEmp
-            // 
-            this.btnAddEmp.Location = new System.Drawing.Point(143, 122);
-            this.btnAddEmp.Margin = new System.Windows.Forms.Padding(4, 6, 4, 5);
-            this.btnAddEmp.Name = "btnAddEmp";
-            this.btnAddEmp.Size = new System.Drawing.Size(103, 49);
-            this.btnAddEmp.TabIndex = 0;
-            this.btnAddEmp.Text = "Add Employee";
-            this.btnAddEmp.UseVisualStyleBackColor = true;
-            this.btnAddEmp.Visible = false;
-            this.btnAddEmp.Click += new System.EventHandler(this.BtnAddEmp_Click);
             // 
             // btnUploadFp
             // 
@@ -365,6 +372,7 @@ namespace zkfpPrototype
             this.mainControl.Controls.Add(this.mainPage);
             this.mainControl.Controls.Add(this.secondPage);
             this.mainControl.Controls.Add(this.thirdPage);
+            this.mainControl.Controls.Add(this.devicePage);
             this.mainControl.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainControl.Location = new System.Drawing.Point(4, 2);
             this.mainControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -433,7 +441,6 @@ namespace zkfpPrototype
             this.secondPage.Controls.Add(this.dbControl);
             this.secondPage.Controls.Add(this.btnConnectDb);
             this.secondPage.Controls.Add(this.secondMessageBox);
-            this.secondPage.Controls.Add(this.btnAddEmp);
             this.secondPage.Location = new System.Drawing.Point(4, 29);
             this.secondPage.Name = "secondPage";
             this.secondPage.Size = new System.Drawing.Size(1095, 560);
@@ -560,6 +567,7 @@ namespace zkfpPrototype
             this.secondMessageBox.Size = new System.Drawing.Size(612, 327);
             this.secondMessageBox.TabIndex = 17;
             this.secondMessageBox.Text = "Please connect to your database.";
+            this.secondMessageBox.TextChanged += new System.EventHandler(this.SecondMessageBox_TextChanged);
             // 
             // thirdPage
             // 
@@ -636,6 +644,175 @@ namespace zkfpPrototype
             this.tbId.Size = new System.Drawing.Size(119, 30);
             this.tbId.TabIndex = 5;
             // 
+            // devicePage
+            // 
+            this.devicePage.Controls.Add(this.btnDisconnectDevice);
+            this.devicePage.Controls.Add(this.btnUploadData);
+            this.devicePage.Controls.Add(this.btnDownloadData);
+            this.devicePage.Controls.Add(this.btnConnectDevice);
+            this.devicePage.Controls.Add(this.lblIp);
+            this.devicePage.Controls.Add(this.lblPort);
+            this.devicePage.Controls.Add(this.tbIp);
+            this.devicePage.Controls.Add(this.tbPort);
+            this.devicePage.Controls.Add(this.deviceMessageBox);
+            this.devicePage.Controls.Add(this.deviceControl);
+            this.devicePage.Location = new System.Drawing.Point(4, 29);
+            this.devicePage.Name = "devicePage";
+            this.devicePage.Size = new System.Drawing.Size(1095, 560);
+            this.devicePage.TabIndex = 0;
+            this.devicePage.Text = "Device WL10";
+            // 
+            // btnDisconnectDevice
+            // 
+            this.btnDisconnectDevice.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.btnDisconnectDevice.Enabled = false;
+            this.btnDisconnectDevice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDisconnectDevice.Location = new System.Drawing.Point(720, 3);
+            this.btnDisconnectDevice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDisconnectDevice.Name = "btnDisconnectDevice";
+            this.btnDisconnectDevice.Size = new System.Drawing.Size(150, 30);
+            this.btnDisconnectDevice.TabIndex = 24;
+            this.btnDisconnectDevice.Text = "Disconnect";
+            this.btnDisconnectDevice.UseVisualStyleBackColor = true;
+            this.btnDisconnectDevice.Click += new System.EventHandler(this.BtnDisconnectDevice_Click);
+            // 
+            // btnUploadData
+            // 
+            this.btnUploadData.Enabled = false;
+            this.btnUploadData.Location = new System.Drawing.Point(200, 75);
+            this.btnUploadData.Name = "btnUploadData";
+            this.btnUploadData.Size = new System.Drawing.Size(130, 50);
+            this.btnUploadData.TabIndex = 23;
+            this.btnUploadData.Text = "Upload";
+            this.btnUploadData.UseVisualStyleBackColor = true;
+            this.btnUploadData.Click += new System.EventHandler(this.BtnUploadData_Click);
+            // 
+            // btnDownloadData
+            // 
+            this.btnDownloadData.Enabled = false;
+            this.btnDownloadData.Location = new System.Drawing.Point(21, 75);
+            this.btnDownloadData.Name = "btnDownloadData";
+            this.btnDownloadData.Size = new System.Drawing.Size(130, 50);
+            this.btnDownloadData.TabIndex = 21;
+            this.btnDownloadData.Text = "Download";
+            this.btnDownloadData.UseVisualStyleBackColor = true;
+            this.btnDownloadData.Click += new System.EventHandler(this.BtnDownloadData_Click);
+            // 
+            // btnConnectDevice
+            // 
+            this.btnConnectDevice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConnectDevice.Location = new System.Drawing.Point(528, 3);
+            this.btnConnectDevice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnConnectDevice.Name = "btnConnectDevice";
+            this.btnConnectDevice.Size = new System.Drawing.Size(150, 30);
+            this.btnConnectDevice.TabIndex = 1;
+            this.btnConnectDevice.Text = "Connect";
+            this.btnConnectDevice.UseVisualStyleBackColor = true;
+            this.btnConnectDevice.Click += new System.EventHandler(this.BtnConnectDevice_Click);
+            // 
+            // lblIp
+            // 
+            this.lblIp.AutoSize = true;
+            this.lblIp.Location = new System.Drawing.Point(17, 10);
+            this.lblIp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblIp.Name = "lblIp";
+            this.lblIp.Size = new System.Drawing.Size(79, 20);
+            this.lblIp.TabIndex = 9;
+            this.lblIp.Text = "Ip Address";
+            // 
+            // lblPort
+            // 
+            this.lblPort.AutoSize = true;
+            this.lblPort.Location = new System.Drawing.Point(258, 11);
+            this.lblPort.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(93, 20);
+            this.lblPort.TabIndex = 9;
+            this.lblPort.Text = "Port Number";
+            // 
+            // tbIp
+            // 
+            this.tbIp.Location = new System.Drawing.Point(101, 7);
+            this.tbIp.Name = "tbIp";
+            this.tbIp.Size = new System.Drawing.Size(144, 27);
+            this.tbIp.TabIndex = 20;
+            this.tbIp.Text = "192.168.100.37";
+            // 
+            // tbPort
+            // 
+            this.tbPort.Location = new System.Drawing.Point(357, 7);
+            this.tbPort.Name = "tbPort";
+            this.tbPort.Size = new System.Drawing.Size(144, 27);
+            this.tbPort.TabIndex = 20;
+            this.tbPort.Text = "4370";
+            // 
+            // deviceMessageBox
+            // 
+            this.deviceMessageBox.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deviceMessageBox.Location = new System.Drawing.Point(-3, 226);
+            this.deviceMessageBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.deviceMessageBox.Name = "deviceMessageBox";
+            this.deviceMessageBox.Size = new System.Drawing.Size(612, 327);
+            this.deviceMessageBox.TabIndex = 17;
+            this.deviceMessageBox.Text = "Please connect to your device.";
+            this.deviceMessageBox.TextChanged += new System.EventHandler(this.DeviceMessageBox_TextChanged);
+            // 
+            // deviceControl
+            // 
+            this.deviceControl.Controls.Add(this.deviceDataPage);
+            this.deviceControl.Location = new System.Drawing.Point(616, 41);
+            this.deviceControl.Name = "deviceControl";
+            this.deviceControl.SelectedIndex = 0;
+            this.deviceControl.Size = new System.Drawing.Size(476, 519);
+            this.deviceControl.TabIndex = 22;
+            // 
+            // deviceDataPage
+            // 
+            this.deviceDataPage.Controls.Add(this.deviceData);
+            this.deviceDataPage.Location = new System.Drawing.Point(4, 29);
+            this.deviceDataPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.deviceDataPage.Name = "deviceDataPage";
+            this.deviceDataPage.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.deviceDataPage.Size = new System.Drawing.Size(468, 486);
+            this.deviceDataPage.TabIndex = 0;
+            this.deviceDataPage.Text = "Device Data";
+            this.deviceDataPage.UseVisualStyleBackColor = true;
+            // 
+            // deviceData
+            // 
+            this.deviceData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.deviceData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.deviceFpId,
+            this.deviceFpTmp,
+            this.devicEmpId});
+            this.deviceData.Location = new System.Drawing.Point(7, 0);
+            this.deviceData.Name = "deviceData";
+            this.deviceData.RowHeadersWidth = 51;
+            this.deviceData.RowTemplate.Height = 24;
+            this.deviceData.Size = new System.Drawing.Size(461, 483);
+            this.deviceData.TabIndex = 22;
+            // 
+            // deviceFpId
+            // 
+            this.deviceFpId.HeaderText = "Fp_Id";
+            this.deviceFpId.MinimumWidth = 6;
+            this.deviceFpId.Name = "deviceFpId";
+            this.deviceFpId.Width = 50;
+            // 
+            // deviceFpTmp
+            // 
+            this.deviceFpTmp.HeaderText = "Fp_Template";
+            this.deviceFpTmp.MinimumWidth = 6;
+            this.deviceFpTmp.Name = "deviceFpTmp";
+            this.deviceFpTmp.Width = 250;
+            // 
+            // devicEmpId
+            // 
+            this.devicEmpId.HeaderText = "Emp_Id";
+            this.devicEmpId.MinimumWidth = 6;
+            this.devicEmpId.Name = "devicEmpId";
+            this.devicEmpId.Width = 125;
+            // 
             // inputName
             // 
             this.inputName.Location = new System.Drawing.Point(410, 115);
@@ -652,7 +829,6 @@ namespace zkfpPrototype
             this.lblName.Size = new System.Drawing.Size(49, 20);
             this.lblName.TabIndex = 9;
             this.lblName.Text = "Name";
-            
             // 
             // inputTmp
             // 
@@ -694,6 +870,11 @@ namespace zkfpPrototype
             this.dbControl.ResumeLayout(false);
             this.thirdPage.ResumeLayout(false);
             this.thirdPage.PerformLayout();
+            this.devicePage.ResumeLayout(false);
+            this.devicePage.PerformLayout();
+            this.deviceControl.ResumeLayout(false);
+            this.deviceDataPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.deviceData)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -709,7 +890,6 @@ namespace zkfpPrototype
         private Button btnRegister;
         private Button btnConnectDb;
         private Button btnUploadFp;
-        private Button btnAddEmp;
         private TabControl fpControl;
         private TabControl mainControl;
         private TabControl dbControl;
@@ -730,7 +910,6 @@ namespace zkfpPrototype
         private DataGridView empData;
         private DataGridViewTextBoxColumn empId;
         private DataGridViewTextBoxColumn empName;
-        
         private TextBox inputTmp;
         private TextBox inputName;
         private Button btnDisconnect;
@@ -755,6 +934,23 @@ namespace zkfpPrototype
         private TextBox tbId;
         private TextBox tbUserInputId;
         private Label lblUserInput;
+        private TabPage devicePage;
+        private Button btnConnectDevice;
+        private Label lblIp;
+        private Label lblPort;
+        private TextBox tbIp;
+        private TextBox tbPort;
+        private Button btnDownloadData;
+        private DataGridView deviceData;
+        private DataGridViewTextBoxColumn deviceEmpId;
+        private DataGridViewTextBoxColumn deviceFpId;
+        private DataGridViewTextBoxColumn deviceFpTmp;
+        private TabControl deviceControl;
+        private RichTextBox deviceMessageBox;
+        private TabPage deviceDataPage;
+        private DataGridViewTextBoxColumn devicEmpId;
+        private Button btnUploadData;
+        private Button btnDisconnectDevice;
     }
 }
 

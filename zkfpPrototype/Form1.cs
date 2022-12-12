@@ -1,24 +1,31 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using BioMetrixCore;
 using libzkfpcsharp;
 using Sample;
+using zkemkeeper;
 
 namespace zkfpPrototype
 {
     public partial class Form1 : Form
     {
+        CZKEM objCZKEM = new CZKEM();
+        public ZkemClient objZkeeper = new ZkemClient();
+        DeviceManipulator manipulator = new DeviceManipulator();
         readonly string datasource = @"DBSERV\SQL2K8";//server name
         readonly string database = "testScan"; //database name
         readonly string username = "fis"; //username
         readonly string password = "fis"; //password
         readonly string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint Project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
+        readonly int machineNumber = 1;
+
         //SqlConnection conn = new SqlConnection();
 
         private static ArrayList ListFpTemplate = new ArrayList();
@@ -32,6 +39,11 @@ namespace zkfpPrototype
         private static ArrayList ListAllTime = new ArrayList();
         private static ArrayList ListAllEmpId = new ArrayList();
 
+        private static ArrayList ListAllDeviceEmpId = new ArrayList();
+        private static ArrayList ListAllDeviceFpId = new ArrayList();
+        private static ArrayList ListAllDeviceTmp = new ArrayList();
+
+
 
         IntPtr mDevHandle = IntPtr.Zero;
         IntPtr mDBHandle = IntPtr.Zero;
@@ -40,7 +52,7 @@ namespace zkfpPrototype
         bool bIsTimeToDie = false;
         bool IsRegister = false;
         bool bIdentify = true;
-        bool isExist = false;
+        bool isExist = true;
         byte[] FPBuffer;
         int RegisterCount = 0;
         const int REGISTER_FINGER_COUNT = 3;
@@ -51,7 +63,6 @@ namespace zkfpPrototype
 
         int cbCapTmp = 2048;
         int cbRegTmp = 0;
-        //int iFid = 1;
         int nCount; // Count connect device
         int zkfpErrOk = zkfperrdef.ZKFP_ERR_OK;// ZKDP_ERR_OK = 0, operation success
         private int mfpWidth = 0;
@@ -85,7 +96,7 @@ namespace zkfpPrototype
                     btnInit.Enabled = false;
                     btnOpen.Enabled = true;
                     btnClose.Enabled = true;
-                    btnRegister.Enabled = true;
+                    
                 }
                 else
                 {
@@ -142,7 +153,6 @@ namespace zkfpPrototype
             zkfp2.GetParameters(mDevHandle, 3, paramValue, ref size);
             zkfp2.ByteArray2Int(paramValue, ref mfpDpi);
 
-            
             messageBox.AppendText($"\nOpen Success!\nReader parameter, image width: {mfpWidth} height: {mfpHeight} dpi: {mfpDpi}");
             Thread captureThread = new Thread(new ThreadStart(StartCapture));
             captureThread.IsBackground = true;
@@ -165,11 +175,9 @@ namespace zkfpPrototype
                         SendMessage(FormHandle, MESSAGE_CAPTURED_OK, IntPtr.Zero, IntPtr.Zero);
                     }
                 }
-                
                 catch (Exception ex)
                 {
                     messageBox.AppendText($"\nError message: {ex.Message}");
-                    
                 }
                 finally
                 {
@@ -246,6 +254,9 @@ namespace zkfpPrototype
         {
             string userId = tbUserInputId.Text;
             int empId = Int32.Parse(userId);
+            SqlConnection conn = new SqlConnection(localDatabase);
+            conn.Open();
+            ReadFpData(conn);
             if (userId == "")
             {
                 messageBox.AppendText($"\nPlease enter your id!");
@@ -258,6 +269,11 @@ namespace zkfpPrototype
                     messageBox.AppendText($"\nPlease register your id and name at employee page!");
                     return;
                 }
+            }
+            if (ListId.Count == 10)
+            {
+                messageBox.AppendText($"\nYour fingerprint already finish registered");
+                return;
             }
             messageBox.AppendText("\nStart register");
             if (!IsRegister)
@@ -315,7 +331,7 @@ namespace zkfpPrototype
             }
             if (ListId.Count == 10)
             {
-                messageBox.AppendText($"Your fingerprint already finish registered");
+                messageBox.AppendText($"\nYour fingerprint already finish registered");
                 return;
             }
             if (ret == 0)
@@ -354,9 +370,9 @@ namespace zkfpPrototype
                         messageBox.AppendText($"\nFingerprint Id: {ListId[i]}\nEmployee Id: {ListEmpId1[i]}\nName: {ListName[i]}\nStatus: Registered\nScore: {ret}\nTime registered: {regTime:dd/MM/yyyy HH:mm:ss}");
                         return;
                     }
-                    /*else
-                        messageBox.AppendText($"\nFingerprint already by {ListName[i]}");
-                        return;*//*
+                    //else
+                        //messageBox.AppendText($"\nFingerprint already by {ListName[i]}");
+                        //return;
                 //}
                 
                 if (ListId.Count > 10)
@@ -441,7 +457,7 @@ namespace zkfpPrototype
                     {
                         if (empId == (int)ListEmpId[j])
                             {
-                                messageBox.AppendText($"\nFingerprint found, Name= {ListName[j]}, Score= {ret}, Register fingerprint= {ListFpTemplate.Count} !");
+                                messageBox.AppendText($"\nFingerprint found, Name= {ListName[j]}, Score= {ret}, Registered fingerprint= {ListFpTemplate.Count} !");
                                 isExist = false;
                                 return;
                             }
@@ -481,7 +497,6 @@ namespace zkfpPrototype
 
         private void ReadFpData(SqlConnection conn)
         {
-            //conn.Open();
             string userId = tbUserInputId.Text;
             int empId = Int32.Parse(userId);
             string fp = $"select * from Table_fp where emp_id = {empId}";
@@ -513,11 +528,7 @@ namespace zkfpPrototype
             SqlCommand fpCommand = new SqlCommand(fp, conn);
             SqlDataReader fpReader = fpCommand.ExecuteReader();
             fpData.Rows.Clear();
-            /*ListAllId.Clear();
-            ListAllFpTemplate.Clear();
-            ListAllTime.Clear();
-            ListAllEmpId1.Clear();
-            */while (fpReader.Read())
+            while (fpReader.Read())
             {
                 DataGridViewRow newRow = new DataGridViewRow();
                 newRow.CreateCells(fpData);
@@ -531,7 +542,6 @@ namespace zkfpPrototype
                 ListAllEmpId.Add(fpReader["emp_id"]);
                 fpData.Rows.Add(newRow);
             }
-            labelNumOfFp.Text = $"Number of fingerprint registered: {ListFpTemplate.Count}";
             conn.Close();
         }
 
@@ -556,14 +566,7 @@ namespace zkfpPrototype
             conn.Close();
         }
 
-        private void BtnAddEmp_Click(object sender, EventArgs e)
-        {
-            var myForm = new Form3();
-            myForm.Show();
-            
-        }
 
-        
         private void SaveFpData(SqlConnection conn, string strFp)
         {
             conn.Open();
@@ -621,13 +624,12 @@ namespace zkfpPrototype
                 tbDbName.Enabled = false;
                 tbUserName.Enabled = false;
                 tbPassword.Enabled = false;
-
             }
             catch (Exception ex)
             {
                 secondMessageBox.AppendText($"\nDatabase connect fail, Error message: {ex.Message}");
             }
-            conn.Close();
+            conn.Close();           
         }
 
         private void messageBox_TextChanged(object sender, EventArgs e)
@@ -669,6 +671,111 @@ namespace zkfpPrototype
         {
             tbId.Text = "";
             tbName.Text = "";
+        }
+
+        private void BtnConnectDevice_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string ip = tbIp.Text;
+                //int port = Convert.ToInt32(lblPort.Text);
+                string port = tbPort.Text;
+                int portNum = Convert.ToInt32(port);
+                bool resultBool = objZkeeper.Connect_Net(ip, portNum);
+                if (resultBool)
+                {
+                    deviceMessageBox.AppendText($"\nConnect success");
+                    tbIp.Enabled = false;
+                    tbPort.Enabled = false;
+                    btnUploadData.Enabled = true;
+                    btnDownloadData.Enabled = true;
+                    btnDisconnectDevice.Enabled = true;
+                    btnConnectDevice.Enabled = false;
+                    deviceData.Visible = true;
+                    return;
+                }
+                else
+                {
+                    deviceMessageBox.AppendText($"\nConnect fail");
+                }
+            }
+            catch (Exception ex)
+            {
+                deviceMessageBox.AppendText($"\nError message: {ex}");
+            }
+            
+        }
+
+        private void BtnDownloadData_Click(object sender, EventArgs e)
+        {
+            bool result = objCZKEM.ReadAllUserID(machineNumber);
+
+            try
+            {
+                ICollection<UserInfo> lstFingerPrintTemplates = manipulator.GetAllUserInfo(objZkeeper, machineNumber);
+                if (lstFingerPrintTemplates != null && lstFingerPrintTemplates.Count > 0)
+                {
+                    deviceMessageBox.AppendText($"\n{lstFingerPrintTemplates.Count} records found ");
+                    ListAllDeviceFpId = manipulator.GetFpId();
+                    ListAllDeviceTmp = manipulator.GetFpTemplate();
+                    ListAllDeviceEmpId = manipulator.GetEmpId();
+                    ReadDeviceData(ListAllDeviceFpId, ListAllDeviceTmp, ListAllDeviceEmpId);
+                }
+                else
+                {
+                    deviceMessageBox.AppendText($"\nRead failed");
+
+                }
+            }
+            catch(Exception ex)
+            {
+                deviceMessageBox.AppendText($"\nError message: {ex}");
+
+            } 
+            
+        }
+
+        private void ReadDeviceData(ArrayList id, ArrayList tmp, ArrayList empId)
+        {
+            deviceData.Rows.Clear();
+            for (int i = 0; i < ListAllDeviceFpId.Count; i++)
+            {
+                //deviceMessageBox.AppendText($"\nId: {id[i]}\nEmp id: {empId[i]}");
+                DataGridViewRow deviceRow = new DataGridViewRow();
+                deviceRow.CreateCells(deviceData);
+                deviceRow.Cells[0].Value = id[i];
+                deviceRow.Cells[1].Value = tmp[i];
+                deviceRow.Cells[2].Value = empId[i];
+                deviceData.Rows.Add(deviceRow);
+            }
+
+        }
+
+        private void DeviceMessageBox_TextChanged(object sender, EventArgs e)
+        {
+            deviceMessageBox.SelectionStart = messageBox.Text.Length;
+            deviceMessageBox.ScrollToCaret();
+        }
+
+        private void SecondMessageBox_TextChanged(object sender, EventArgs e)
+        {
+            secondMessageBox.SelectionStart = messageBox.Text.Length;
+            secondMessageBox.ScrollToCaret();
+        }
+
+        private void BtnUploadData_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnDisconnectDevice_Click(object sender, EventArgs e)
+        {
+            objZkeeper.Disconnect();
+            btnConnectDevice.Enabled = true;
+            btnDownloadData.Enabled = false;
+            btnUploadData.Enabled = false;
+            deviceData.Visible = false;
+            deviceMessageBox.AppendText($"\nDevice disconnect");
         }
     }  
 }
