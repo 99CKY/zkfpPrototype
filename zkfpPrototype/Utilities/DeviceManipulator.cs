@@ -182,7 +182,8 @@ namespace BioMetrixCore
                     {
                         if (objZkeeper.SSR_SetUserInfo(machineNumber, sdwEnrollNumber, sName, sPassword, iPrivilege, bEnabled))//upload user information to the memory
                             objZkeeper.SetUserTmpExStr(machineNumber, sdwEnrollNumber, idwFingerIndex, iFlag, sTmpData);//upload templates information to the memory
-                        else return false;
+                        else 
+                            return false;
                     }
                     else
                     {
@@ -200,7 +201,7 @@ namespace BioMetrixCore
                 return false;
         }
 
-        /*public object ClearData(ZkemClient objZkeeper, int machineNumber, ClearFlag clearFlag)
+        public object ClearData(ZkemClient objZkeeper, int machineNumber, ClearFlag clearFlag)
         {
             int iDataFlag = (int)clearFlag;
 
@@ -212,13 +213,12 @@ namespace BioMetrixCore
                 objZkeeper.GetLastError(ref idwErrorCode);
                 return idwErrorCode;
             }
-        }*/
+        }
 
         public bool ClearGLog(ZkemClient objZkeeper, int machineNumber)
         {
             return objZkeeper.ClearGLog(machineNumber);
         }
-
 
         public string FetchDeviceInfo(ZkemClient objZkeeper, int machineNumber)
         {
@@ -277,7 +277,6 @@ namespace BioMetrixCore
             return sb.ToString();
         }
 
-
         public ArrayList GetEmpId()
         {
             return ListAllEmpId;
@@ -287,6 +286,7 @@ namespace BioMetrixCore
         {
             return ListAllFpTemplate;
         }
+        
         public ArrayList GetFpId()
         {
             return ListAllId;

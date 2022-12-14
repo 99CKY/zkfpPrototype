@@ -30,6 +30,7 @@ namespace zkfpPrototype
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnInit = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -73,6 +74,7 @@ namespace zkfpPrototype
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
             this.thirdPage = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.save = new System.Windows.Forms.Button();
             this.cancel = new System.Windows.Forms.Button();
             this.lbName = new System.Windows.Forms.Label();
@@ -98,6 +100,7 @@ namespace zkfpPrototype
             this.inputName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -571,6 +574,7 @@ namespace zkfpPrototype
             // 
             // thirdPage
             // 
+            this.thirdPage.Controls.Add(this.richTextBox1);
             this.thirdPage.Controls.Add(this.save);
             this.thirdPage.Controls.Add(this.cancel);
             this.thirdPage.Controls.Add(this.lbName);
@@ -583,10 +587,19 @@ namespace zkfpPrototype
             this.thirdPage.TabIndex = 0;
             this.thirdPage.Text = "Employee";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(0, 253);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(1089, 311);
+            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.Text = "Please register";
+            // 
             // save
             // 
             this.save.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.save.Location = new System.Drawing.Point(69, 208);
+            this.save.Location = new System.Drawing.Point(65, 156);
             this.save.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(150, 50);
@@ -598,7 +611,7 @@ namespace zkfpPrototype
             // cancel
             // 
             this.cancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancel.Location = new System.Drawing.Point(279, 208);
+            this.cancel.Location = new System.Drawing.Point(264, 156);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(150, 50);
             this.cancel.TabIndex = 1;
@@ -610,7 +623,7 @@ namespace zkfpPrototype
             // 
             this.lbName.AutoSize = true;
             this.lbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbName.Location = new System.Drawing.Point(117, 123);
+            this.lbName.Location = new System.Drawing.Point(113, 97);
             this.lbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbName.Name = "lbName";
             this.lbName.Size = new System.Drawing.Size(141, 23);
@@ -621,7 +634,7 @@ namespace zkfpPrototype
             // 
             this.lbId.AutoSize = true;
             this.lbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbId.Location = new System.Drawing.Point(143, 61);
+            this.lbId.Location = new System.Drawing.Point(139, 35);
             this.lbId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbId.Name = "lbId";
             this.lbId.Size = new System.Drawing.Size(113, 23);
@@ -631,7 +644,7 @@ namespace zkfpPrototype
             // tbName
             // 
             this.tbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(256, 117);
+            this.tbName.Location = new System.Drawing.Point(252, 91);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(119, 30);
             this.tbName.TabIndex = 4;
@@ -639,7 +652,7 @@ namespace zkfpPrototype
             // tbId
             // 
             this.tbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbId.Location = new System.Drawing.Point(256, 58);
+            this.tbId.Location = new System.Drawing.Point(252, 32);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(119, 30);
             this.tbId.TabIndex = 5;
@@ -837,6 +850,12 @@ namespace zkfpPrototype
             this.inputTmp.Size = new System.Drawing.Size(100, 22);
             this.inputTmp.TabIndex = 21;
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 8000;
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -951,6 +970,8 @@ namespace zkfpPrototype
         private DataGridViewTextBoxColumn devicEmpId;
         private Button btnUploadData;
         private Button btnDisconnectDevice;
+        private RichTextBox richTextBox1;
+        private Timer timer1;
     }
 }
 

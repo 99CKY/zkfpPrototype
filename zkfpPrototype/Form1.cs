@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -43,7 +44,7 @@ namespace zkfpPrototype
         private static ArrayList ListAllDeviceFpId = new ArrayList();
         private static ArrayList ListAllDeviceTmp = new ArrayList();
 
-
+        HashSet<int> results = new HashSet<int>();
 
         IntPtr mDevHandle = IntPtr.Zero;
         IntPtr mDBHandle = IntPtr.Zero;
@@ -478,7 +479,7 @@ namespace zkfpPrototype
             //create instanace of database connection
             SqlConnection conn = new SqlConnection(localDatabase);
             
-            //open connection
+           
             try
             {
                 conn.Open();
@@ -646,6 +647,15 @@ namespace zkfpPrototype
             int empId = Int32.Parse(id);
             string query = "INSERT INTO Table_employee (Id, emp_name)";
             query += " VALUES (@Id, @emp_name)";
+            for (int i = 0; i < ListEmpId.Count; i++)
+            {
+                if (empId == (int)ListEmpId[i])
+                {
+                    richTextBox1.AppendText($"\nId already register");
+                    return;
+                }
+            }
+             
             try
             {
                 conn.Open();
@@ -653,7 +663,7 @@ namespace zkfpPrototype
                 myCommand.Parameters.AddWithValue("@Id", empId);
                 myCommand.Parameters.AddWithValue("@emp_name", empName);
                 myCommand.ExecuteNonQuery();
-                secondMessageBox.AppendText($"\nRegister success\nEmployee Id: {id}\nEmployee Name: {empName}");
+                richTextBox1.AppendText($"\nRegister success\nEmployee Id: {id}\nEmployee Name: {empName}");
                 
             }
             catch (Exception ex)
@@ -675,7 +685,7 @@ namespace zkfpPrototype
 
         private void BtnConnectDevice_Click(object sender, EventArgs e)
         {
-            try
+           try
             {
                 string ip = tbIp.Text;
                 //int port = Convert.ToInt32(lblPort.Text);
@@ -709,7 +719,9 @@ namespace zkfpPrototype
         private void BtnDownloadData_Click(object sender, EventArgs e)
         {
             bool result = objCZKEM.ReadAllUserID(machineNumber);
-
+            ListAllDeviceFpId.Clear();
+            ListAllDeviceTmp.Clear();
+            ListAllDeviceEmpId.Clear();
             try
             {
                 ICollection<UserInfo> lstFingerPrintTemplates = manipulator.GetAllUserInfo(objZkeeper, machineNumber);
@@ -738,17 +750,28 @@ namespace zkfpPrototype
         private void ReadDeviceData(ArrayList id, ArrayList tmp, ArrayList empId)
         {
             deviceData.Rows.Clear();
+            
             for (int i = 0; i < ListAllDeviceFpId.Count; i++)
             {
-                //deviceMessageBox.AppendText($"\nId: {id[i]}\nEmp id: {empId[i]}");
                 DataGridViewRow deviceRow = new DataGridViewRow();
                 deviceRow.CreateCells(deviceData);
                 deviceRow.Cells[0].Value = id[i];
                 deviceRow.Cells[1].Value = tmp[i];
                 deviceRow.Cells[2].Value = empId[i];
                 deviceData.Rows.Add(deviceRow);
-            }
 
+                //find out the same id between local database and database server
+                if (ListEmpId.Contains(Convert.ToInt32(empId[i])))
+                {
+                    if (!results.Contains(Convert.ToInt32(empId[i])))
+                    {
+                        results.Add(Convert.ToInt32(empId[i]));
+                    }
+                }
+                
+            }
+            
+                       
         }
 
         private void DeviceMessageBox_TextChanged(object sender, EventArgs e)
@@ -765,7 +788,40 @@ namespace zkfpPrototype
 
         private void BtnUploadData_Click(object sender, EventArgs e)
         {
+            List<UserInfo> lstUserInfo = new List<UserInfo>();
+            if (results.Count != 0)
+            {
+                foreach (int num in results)
+                {
+                    deviceMessageBox.AppendText($"\nSame id: {num}");
+                    return;
+                }
+            }
+            for (int i = 0; i < ListAllFpTemplate.Count; i++)
+            {
+                UserInfo fpInfo = new UserInfo();
+                fpInfo.MachineNumber = 1;
+                fpInfo.EnrollNumber = ListAllEmpId[i].ToString();
+                for (int j = 0; j < ListName.Count; j++)
+                {
+                    if (ListAllEmpId[i] == ListEmpId[j])
+                    {
+                        fpInfo.Name = ListName[j].ToString();
+                    }
+                }
+                
+                fpInfo.FingerIndex = Convert.ToInt32(ListId[i]);
+                fpInfo.TmpData = ListAllFpTemplate[i].ToString();
+                /*fpInfo.Privelage = 1;
+                fpInfo.Password = "1234";
+                fpInfo.Enabled = true;
+                fpInfo.iFlag = "1";*/
+                lstUserInfo.Add(fpInfo);
 
+                
+            }
+            deviceMessageBox.AppendText($"\n {lstUserInfo.Count} records upload success");
+            //manipulator.UploadFTPTemplate(objZkeeper, machineNumber, lstUserInfo);
         }
 
         private void BtnDisconnectDevice_Click(object sender, EventArgs e)
@@ -777,5 +833,46 @@ namespace zkfpPrototype
             deviceData.Visible = false;
             deviceMessageBox.AppendText($"\nDevice disconnect");
         }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                bool isConnect = false;
+                string ip = tbIp.Text;
+                //int port = Convert.ToInt32(lblPort.Text);
+                string port = tbPort.Text;
+                int portNum = Convert.ToInt32(port);
+                bool resultBool = objZkeeper.Connect_Net(ip, portNum);
+                if (resultBool)
+                {
+                    tbIp.Enabled = false;
+                    tbPort.Enabled = false;
+                    btnUploadData.Enabled = true;
+                    btnDownloadData.Enabled = true;
+                    btnDisconnectDevice.Enabled = true;
+                    btnConnectDevice.Enabled = false;
+                    deviceData.Visible = true;
+                    
+                    deviceMessageBox.AppendText($"\nConnect success");
+                    isConnect = true;
+                    if (isConnect)
+                    {
+                        timer1.Stop();
+                        return;
+                    }
+                }
+                else
+                {
+                    deviceMessageBox.AppendText($"\nConnect fail");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                deviceMessageBox.AppendText($"\nError message: {ex}");
+            }
+        }
+
     }  
 }
