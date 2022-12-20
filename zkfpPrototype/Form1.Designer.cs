@@ -61,15 +61,9 @@ namespace zkfpPrototype
             this.lblUserInput = new System.Windows.Forms.Label();
             this.labelNumOfFp = new System.Windows.Forms.Label();
             this.secondPage = new System.Windows.Forms.TabPage();
-            this.btnTestConnection = new System.Windows.Forms.Button();
-            this.tbDataSource = new System.Windows.Forms.TextBox();
-            this.tbUserName = new System.Windows.Forms.TextBox();
-            this.tbDbName = new System.Windows.Forms.TextBox();
-            this.tbPassword = new System.Windows.Forms.TextBox();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.lblUserName = new System.Windows.Forms.Label();
-            this.lblDbName = new System.Windows.Forms.Label();
-            this.lblDataSource = new System.Windows.Forms.Label();
+            this.cmbDeleteItem = new System.Windows.Forms.ComboBox();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.lblDeleteItem = new System.Windows.Forms.Label();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
@@ -97,6 +91,7 @@ namespace zkfpPrototype
             this.deviceFpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deviceFpTmp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.devicEmpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeviceUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inputName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
@@ -368,7 +363,7 @@ namespace zkfpPrototype
             this.messageBox.Size = new System.Drawing.Size(612, 327);
             this.messageBox.TabIndex = 17;
             this.messageBox.Text = "Please plugin your reader and initialize your reader first.";
-            this.messageBox.TextChanged += new System.EventHandler(this.messageBox_TextChanged);
+            this.messageBox.TextChanged += new System.EventHandler(this.MessageBox_TextChanged);
             // 
             // mainControl
             // 
@@ -431,15 +426,9 @@ namespace zkfpPrototype
             // 
             // secondPage
             // 
-            this.secondPage.Controls.Add(this.btnTestConnection);
-            this.secondPage.Controls.Add(this.tbDataSource);
-            this.secondPage.Controls.Add(this.tbUserName);
-            this.secondPage.Controls.Add(this.tbDbName);
-            this.secondPage.Controls.Add(this.tbPassword);
-            this.secondPage.Controls.Add(this.lblPassword);
-            this.secondPage.Controls.Add(this.lblUserName);
-            this.secondPage.Controls.Add(this.lblDbName);
-            this.secondPage.Controls.Add(this.lblDataSource);
+            this.secondPage.Controls.Add(this.cmbDeleteItem);
+            this.secondPage.Controls.Add(this.btnDelete);
+            this.secondPage.Controls.Add(this.lblDeleteItem);
             this.secondPage.Controls.Add(this.btnDisconnect);
             this.secondPage.Controls.Add(this.dbControl);
             this.secondPage.Controls.Add(this.btnConnectDb);
@@ -450,92 +439,32 @@ namespace zkfpPrototype
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
-            // btnTestConnection
+            // cmbDeleteItem
             // 
-            this.btnTestConnection.Location = new System.Drawing.Point(146, 35);
-            this.btnTestConnection.Name = "btnTestConnection";
-            this.btnTestConnection.Size = new System.Drawing.Size(100, 50);
-            this.btnTestConnection.TabIndex = 28;
-            this.btnTestConnection.Text = "Test";
-            this.btnTestConnection.UseVisualStyleBackColor = true;
-            this.btnTestConnection.Visible = false;
-            this.btnTestConnection.Click += new System.EventHandler(this.BtnTestConnection_Click);
+            this.cmbDeleteItem.FormattingEnabled = true;
+            this.cmbDeleteItem.Location = new System.Drawing.Point(288, 38);
+            this.cmbDeleteItem.Name = "cmbDeleteItem";
+            this.cmbDeleteItem.Size = new System.Drawing.Size(76, 28);
+            this.cmbDeleteItem.TabIndex = 29;
             // 
-            // tbDataSource
+            // btnDelete
             // 
-            this.tbDataSource.Location = new System.Drawing.Point(426, 19);
-            this.tbDataSource.Name = "tbDataSource";
-            this.tbDataSource.Size = new System.Drawing.Size(165, 27);
-            this.tbDataSource.TabIndex = 27;
-            this.tbDataSource.Text = "DBSERV\\SQL2K8";
-            this.tbDataSource.Visible = false;
+            this.btnDelete.Location = new System.Drawing.Point(395, 31);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(189, 40);
+            this.btnDelete.TabIndex = 28;
+            this.btnDelete.Text = "Delete Fingerprint Data";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.BtnDeleteItem_Click);
             // 
-            // tbUserName
+            // lblDeleteItem
             // 
-            this.tbUserName.Location = new System.Drawing.Point(426, 118);
-            this.tbUserName.Name = "tbUserName";
-            this.tbUserName.Size = new System.Drawing.Size(165, 27);
-            this.tbUserName.TabIndex = 26;
-            this.tbUserName.Text = "fis";
-            this.tbUserName.Visible = false;
-            // 
-            // tbDbName
-            // 
-            this.tbDbName.Location = new System.Drawing.Point(426, 69);
-            this.tbDbName.Name = "tbDbName";
-            this.tbDbName.Size = new System.Drawing.Size(165, 27);
-            this.tbDbName.TabIndex = 25;
-            this.tbDbName.Text = "testScan";
-            this.tbDbName.Visible = false;
-            // 
-            // tbPassword
-            // 
-            this.tbPassword.Location = new System.Drawing.Point(426, 162);
-            this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(165, 27);
-            this.tbPassword.TabIndex = 24;
-            this.tbPassword.Text = "fis";
-            this.tbPassword.Visible = false;
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(300, 170);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(70, 20);
-            this.lblPassword.TabIndex = 23;
-            this.lblPassword.Text = "Password";
-            this.lblPassword.Visible = false;
-            // 
-            // lblUserName
-            // 
-            this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(300, 122);
-            this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(75, 20);
-            this.lblUserName.TabIndex = 22;
-            this.lblUserName.Text = "Username";
-            this.lblUserName.Visible = false;
-            // 
-            // lblDbName
-            // 
-            this.lblDbName.AutoSize = true;
-            this.lblDbName.Location = new System.Drawing.Point(300, 73);
-            this.lblDbName.Name = "lblDbName";
-            this.lblDbName.Size = new System.Drawing.Size(113, 20);
-            this.lblDbName.TabIndex = 21;
-            this.lblDbName.Text = "Database name";
-            this.lblDbName.Visible = false;
-            // 
-            // lblDataSource
-            // 
-            this.lblDataSource.AutoSize = true;
-            this.lblDataSource.Location = new System.Drawing.Point(300, 20);
-            this.lblDataSource.Name = "lblDataSource";
-            this.lblDataSource.Size = new System.Drawing.Size(88, 20);
-            this.lblDataSource.TabIndex = 20;
-            this.lblDataSource.Text = "Data source";
-            this.lblDataSource.Visible = false;
+            this.lblDeleteItem.AutoSize = true;
+            this.lblDeleteItem.Location = new System.Drawing.Point(188, 41);
+            this.lblDeleteItem.Name = "lblDeleteItem";
+            this.lblDeleteItem.Size = new System.Drawing.Size(94, 20);
+            this.lblDeleteItem.TabIndex = 20;
+            this.lblDeleteItem.Text = "Employee ID";
             // 
             // btnDisconnect
             // 
@@ -599,7 +528,7 @@ namespace zkfpPrototype
             // save
             // 
             this.save.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.save.Location = new System.Drawing.Point(65, 156);
+            this.save.Location = new System.Drawing.Point(65, 174);
             this.save.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(150, 50);
@@ -611,7 +540,7 @@ namespace zkfpPrototype
             // cancel
             // 
             this.cancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancel.Location = new System.Drawing.Point(264, 156);
+            this.cancel.Location = new System.Drawing.Point(265, 174);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(150, 50);
             this.cancel.TabIndex = 1;
@@ -623,7 +552,7 @@ namespace zkfpPrototype
             // 
             this.lbName.AutoSize = true;
             this.lbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbName.Location = new System.Drawing.Point(113, 97);
+            this.lbName.Location = new System.Drawing.Point(76, 97);
             this.lbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbName.Name = "lbName";
             this.lbName.Size = new System.Drawing.Size(141, 23);
@@ -634,7 +563,7 @@ namespace zkfpPrototype
             // 
             this.lbId.AutoSize = true;
             this.lbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbId.Location = new System.Drawing.Point(139, 35);
+            this.lbId.Location = new System.Drawing.Point(102, 35);
             this.lbId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbId.Name = "lbId";
             this.lbId.Size = new System.Drawing.Size(113, 23);
@@ -644,7 +573,7 @@ namespace zkfpPrototype
             // tbName
             // 
             this.tbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(252, 91);
+            this.tbName.Location = new System.Drawing.Point(215, 91);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(119, 30);
             this.tbName.TabIndex = 4;
@@ -652,7 +581,7 @@ namespace zkfpPrototype
             // tbId
             // 
             this.tbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbId.Location = new System.Drawing.Point(252, 32);
+            this.tbId.Location = new System.Drawing.Point(215, 32);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(119, 30);
             this.tbId.TabIndex = 5;
@@ -797,7 +726,8 @@ namespace zkfpPrototype
             this.deviceData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.deviceFpId,
             this.deviceFpTmp,
-            this.devicEmpId});
+            this.devicEmpId,
+            this.DeviceUserName});
             this.deviceData.Location = new System.Drawing.Point(7, 0);
             this.deviceData.Name = "deviceData";
             this.deviceData.RowHeadersWidth = 51;
@@ -825,6 +755,13 @@ namespace zkfpPrototype
             this.devicEmpId.MinimumWidth = 6;
             this.devicEmpId.Name = "devicEmpId";
             this.devicEmpId.Width = 125;
+            // 
+            // DeviceUserName
+            // 
+            this.DeviceUserName.HeaderText = "Name";
+            this.DeviceUserName.MinimumWidth = 6;
+            this.DeviceUserName.Name = "DeviceUserName";
+            this.DeviceUserName.Width = 125;
             // 
             // inputName
             // 
@@ -934,15 +871,8 @@ namespace zkfpPrototype
         private Button btnDisconnect;
         private Label lblName;
         private Label labelNumOfFp;
-        private TextBox tbDataSource;
-        private TextBox tbUserName;
-        private TextBox tbDbName;
-        private TextBox tbPassword;
-        private Label lblPassword;
-        private Label lblUserName;
-        private Label lblDbName;
-        private Label lblDataSource;
-        private Button btnTestConnection;
+        private Label lblDeleteItem;
+        private Button btnDelete;
         private DataGridViewTextBoxColumn time_registered;
         private TabPage thirdPage;
         private Button save;
@@ -972,6 +902,8 @@ namespace zkfpPrototype
         private Button btnDisconnectDevice;
         private RichTextBox richTextBox1;
         private Timer timer1;
+        private DataGridViewTextBoxColumn DeviceUserName;
+        private ComboBox cmbDeleteItem;
     }
 }
 

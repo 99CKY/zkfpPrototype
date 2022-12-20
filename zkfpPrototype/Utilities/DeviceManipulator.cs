@@ -5,9 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Text;
-using System.Windows.Forms;
 using zkemkeeper;
 
 namespace BioMetrixCore
@@ -18,6 +16,7 @@ namespace BioMetrixCore
         private static ArrayList ListAllFpTemplate = new ArrayList();
         private static ArrayList ListAllId = new ArrayList();
         private static ArrayList ListAllEmpId = new ArrayList();
+        private static ArrayList ListAllName = new ArrayList();
 
         public ICollection<UserInfo> GetAllUserInfo(ZkemClient objZkeeper, int machineNumber)
         {
@@ -50,8 +49,9 @@ namespace BioMetrixCore
                         ListAllEmpId.Add(fpInfo.EnrollNumber);
                         ListAllId.Add(fpInfo.FingerIndex);
                         ListAllFpTemplate.Add(fpInfo.TmpData);
+                        ListAllName.Add(fpInfo.Name);
                         lstFPTemplates.Add(fpInfo);
-                        //FpData();  
+                       
                     }
                 }
                 GetEmpId();
@@ -182,8 +182,11 @@ namespace BioMetrixCore
                     {
                         if (objZkeeper.SSR_SetUserInfo(machineNumber, sdwEnrollNumber, sName, sPassword, iPrivilege, bEnabled))//upload user information to the memory
                             objZkeeper.SetUserTmpExStr(machineNumber, sdwEnrollNumber, idwFingerIndex, iFlag, sTmpData);//upload templates information to the memory
-                        else 
+                        else
+                        {
+                            
                             return false;
+                        }
                     }
                     else
                     {
@@ -194,8 +197,8 @@ namespace BioMetrixCore
 
                     sLastEnrollNumber = sdwEnrollNumber;
                 }
-
-                return true;
+                return objZkeeper.BatchUpdate(1);
+                 
             }
             else
                 return false;
@@ -291,5 +294,12 @@ namespace BioMetrixCore
         {
             return ListAllId;
         }
+
+        public ArrayList GetName()
+        {
+            return ListAllName;
+        }
+
+
     }
 }

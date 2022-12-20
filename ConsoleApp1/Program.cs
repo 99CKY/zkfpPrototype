@@ -85,6 +85,9 @@ namespace encrypt_decrypt_string
         {
             string decrypted = Decrypt();
             Console.WriteLine(decrypted);
+            Guid guid = Guid.NewGuid();
+            string str = guid.ToString();
+            Console.WriteLine($"\n{str}");
         }
     }
 }
