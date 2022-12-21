@@ -13,10 +13,12 @@ namespace BioMetrixCore
     internal class DeviceManipulator
     {
         CZKEM objCzkem = new CZKEM();
-        private static ArrayList ListAllFpTemplate = new ArrayList();
-        private static ArrayList ListAllId = new ArrayList();
-        private static ArrayList ListAllEmpId = new ArrayList();
-        private static ArrayList ListAllName = new ArrayList();
+        private static List<string> ListAllFpTemplate = new List<string>();
+        private static List<int> ListAllId = new List<int>();
+        private static List<int> ListAllEmpId = new List<int>();
+        private static List<string> ListAllName = new List<string>();
+        int id;
+        string fp_tmp, emp_id;
 
         public ICollection<UserInfo> GetAllUserInfo(ZkemClient objZkeeper, int machineNumber)
         {
@@ -46,12 +48,17 @@ namespace BioMetrixCore
                         fpInfo.Password = sPassword;
                         fpInfo.Enabled = bEnabled;
                         fpInfo.iFlag = iFlag.ToString();
-                        ListAllEmpId.Add(fpInfo.EnrollNumber);
+                        ListAllEmpId.Add(Convert.ToInt32(fpInfo.EnrollNumber));
                         ListAllId.Add(fpInfo.FingerIndex);
                         ListAllFpTemplate.Add(fpInfo.TmpData);
                         ListAllName.Add(fpInfo.Name);
                         lstFPTemplates.Add(fpInfo);
-                       
+                        id = fpInfo.FingerIndex;
+                        fp_tmp = fpInfo.TmpData;
+                        emp_id = fpInfo.EnrollNumber;
+                        ReturnId();
+                        ReturnFpTmp();
+                        ReturnEmpId();
                     }
                 }
                 GetEmpId();
@@ -89,7 +96,6 @@ namespace BioMetrixCore
                 objInfo.MachineNumber = machineNumber;
                 objInfo.IndRegID = int.Parse(dwEnrollNumber1);
                 objInfo.DateTimeRecord = inputDate;
-
                 lstEnrollData.Add(objInfo);
             }
 
@@ -280,26 +286,43 @@ namespace BioMetrixCore
             return sb.ToString();
         }
 
-        public ArrayList GetEmpId()
+        public List<int> GetEmpId()
         {
             return ListAllEmpId;
         }
 
-        public ArrayList GetFpTemplate()
+        public List<string> GetFpTemplate()
         {
             return ListAllFpTemplate;
         }
         
-        public ArrayList GetFpId()
+        public List<int> GetFpId()
         {
             return ListAllId;
         }
 
-        public ArrayList GetName()
+        public List<string> GetName()
         {
             return ListAllName;
         }
 
+        public int ReturnId()
+        {
+            int fp_id = id;
+            return fp_id;
+        }
+
+        public string ReturnFpTmp()
+        {
+            string tmp = fp_tmp;
+            return tmp;
+        }
+
+        public string ReturnEmpId()
+        {
+            string empId = emp_id;
+            return empId;
+        }
 
     }
 }

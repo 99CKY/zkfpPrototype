@@ -61,6 +61,7 @@ namespace zkfpPrototype
             this.lblUserInput = new System.Windows.Forms.Label();
             this.labelNumOfFp = new System.Windows.Forms.Label();
             this.secondPage = new System.Windows.Forms.TabPage();
+            this.btnDeleteEmp = new System.Windows.Forms.Button();
             this.cmbDeleteItem = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.lblDeleteItem = new System.Windows.Forms.Label();
@@ -96,6 +97,8 @@ namespace zkfpPrototype
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblDeleteEmp = new System.Windows.Forms.Label();
+            this.cmbDeleteEmp = new System.Windows.Forms.ComboBox();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -426,6 +429,9 @@ namespace zkfpPrototype
             // 
             // secondPage
             // 
+            this.secondPage.Controls.Add(this.cmbDeleteEmp);
+            this.secondPage.Controls.Add(this.lblDeleteEmp);
+            this.secondPage.Controls.Add(this.btnDeleteEmp);
             this.secondPage.Controls.Add(this.cmbDeleteItem);
             this.secondPage.Controls.Add(this.btnDelete);
             this.secondPage.Controls.Add(this.lblDeleteItem);
@@ -439,6 +445,16 @@ namespace zkfpPrototype
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
+            // btnDeleteEmp
+            // 
+            this.btnDeleteEmp.Location = new System.Drawing.Point(389, 127);
+            this.btnDeleteEmp.Name = "btnDeleteEmp";
+            this.btnDeleteEmp.Size = new System.Drawing.Size(150, 30);
+            this.btnDeleteEmp.TabIndex = 30;
+            this.btnDeleteEmp.Text = "Delete Employee";
+            this.btnDeleteEmp.UseVisualStyleBackColor = true;
+            this.btnDeleteEmp.Click += new System.EventHandler(this.BtnDeleteEmp_Click);
+            // 
             // cmbDeleteItem
             // 
             this.cmbDeleteItem.FormattingEnabled = true;
@@ -449,9 +465,9 @@ namespace zkfpPrototype
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(395, 31);
+            this.btnDelete.Location = new System.Drawing.Point(389, 36);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(189, 40);
+            this.btnDelete.Size = new System.Drawing.Size(189, 30);
             this.btnDelete.TabIndex = 28;
             this.btnDelete.Text = "Delete Fingerprint Data";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -793,6 +809,23 @@ namespace zkfpPrototype
             this.timer1.Interval = 8000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
+            // lblDeleteEmp
+            // 
+            this.lblDeleteEmp.AutoSize = true;
+            this.lblDeleteEmp.Location = new System.Drawing.Point(188, 131);
+            this.lblDeleteEmp.Name = "lblDeleteEmp";
+            this.lblDeleteEmp.Size = new System.Drawing.Size(94, 20);
+            this.lblDeleteEmp.TabIndex = 31;
+            this.lblDeleteEmp.Text = "Employee ID";
+            // 
+            // cmbDeleteEmp
+            // 
+            this.cmbDeleteEmp.FormattingEnabled = true;
+            this.cmbDeleteEmp.Location = new System.Drawing.Point(288, 128);
+            this.cmbDeleteEmp.Name = "cmbDeleteEmp";
+            this.cmbDeleteEmp.Size = new System.Drawing.Size(76, 28);
+            this.cmbDeleteEmp.TabIndex = 32;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -904,6 +937,9 @@ namespace zkfpPrototype
         private Timer timer1;
         private DataGridViewTextBoxColumn DeviceUserName;
         private ComboBox cmbDeleteItem;
+        private Button btnDeleteEmp;
+        private ComboBox cmbDeleteEmp;
+        private Label lblDeleteEmp;
     }
 }
 

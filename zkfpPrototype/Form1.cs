@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using BioMetrixCore;
 using libzkfpcsharp;
 using Sample;
@@ -39,10 +37,10 @@ namespace zkfpPrototype
         private static ArrayList ListAllTime = new ArrayList();
         private static ArrayList ListAllEmpId = new ArrayList();
 
-        private static ArrayList ListAllDeviceEmpId = new ArrayList();
-        private static ArrayList ListAllDeviceFpId = new ArrayList();
-        private static ArrayList ListAllDeviceTmp = new ArrayList();
-        private static ArrayList ListAllDeviceUserName = new ArrayList(); 
+        private static List<int> ListAllDeviceEmpId = new List<int>();
+        private static List<int> ListAllDeviceFpId = new List<int>();
+        private static List<string> ListAllDeviceTmp = new List<string>();
+        private static List<string> ListAllDeviceUserName = new List<string>(); 
 
         HashSet<int> results = new HashSet<int>();
 
@@ -355,6 +353,8 @@ namespace zkfpPrototype
                     ReadFpData(conn);
                     SaveFpData(conn, strFp);
                     messageBox.AppendText($"\nDatabase update success");
+                    labelNumOfFp.Text = $"Number of fingerprint registered: {ListFpTemplate.Count + 1}";
+
                 }
                 catch (Exception ex)
                 {
@@ -527,7 +527,7 @@ namespace zkfpPrototype
                 ListEmpId1.Add(fpReader["emp_id"]);
                
             }
-            labelNumOfFp.Text = $"Number of fingerprint registered: {ListFpTemplate.Count}";
+            //labelNumOfFp.Text = $"Number of fingerprint registered: {ListFpTemplate.Count}";
             conn.Close();
         }
 
@@ -582,10 +582,17 @@ namespace zkfpPrototype
                 ListEmpId.Add(empReader["Id"]);
                 ListName.Add(empReader["emp_name"]);
                 empData.Rows.Add(empRow);
+                cmbDeleteEmp.Items.Clear();
+                foreach (int num in ListEmpId)
+                {
+                    if (!cmbDeleteEmp.Items.Contains(num))
+                    {
+                        cmbDeleteEmp.Items.Add(num);
+                    }
+                }
             }
             conn.Close();
         }
-
 
         private void SaveFpData(SqlConnection conn, string strFp)
         {
@@ -604,7 +611,7 @@ namespace zkfpPrototype
                 myCommand.Parameters.AddWithValue("@time_registered", currentTime);
                 myCommand.Parameters.AddWithValue("@emp_id", empId);
                 myCommand.ExecuteNonQuery();
-                labelNumOfFp.Text = $"Number of fingerprint registered: {id}";
+                
                 
             }
             catch (Exception ex)
@@ -680,7 +687,7 @@ namespace zkfpPrototype
             query += " VALUES (@Id, @emp_name)";
             for (int i = 0; i < ListEmpId.Count; i++)
             {
-                if (empId == (int)ListEmpId[i])
+                if (empId == Convert.ToInt32(ListEmpId[i]))
                 {
                     richTextBox1.AppendText($"\nId already register");
                     return;
@@ -763,6 +770,7 @@ namespace zkfpPrototype
                     ListAllDeviceEmpId = manipulator.GetEmpId();
                     ListAllDeviceUserName = manipulator.GetName();
                     ReadDeviceData(ListAllDeviceFpId, ListAllDeviceTmp, ListAllDeviceEmpId, ListAllDeviceUserName);
+                    SaveDataToDb(ListAllDeviceFpId, ListAllDeviceTmp, ListAllDeviceEmpId);
                 }
                 else
                 {
@@ -773,12 +781,11 @@ namespace zkfpPrototype
             catch(Exception ex)
             {
                 deviceMessageBox.AppendText($"\nError message: {ex}");
-
             } 
             
         }
 
-        private void ReadDeviceData(ArrayList id, ArrayList tmp, ArrayList empId, ArrayList name)
+        private void ReadDeviceData(List<int> id, List<string> tmp, List<int> empId, List<string> name)
         {
             deviceData.Rows.Clear();
             for (int i = 0; i < ListAllDeviceFpId.Count; i++)
@@ -801,10 +808,45 @@ namespace zkfpPrototype
                 }
                 
             }
-            
-                       
         }
 
+        private void SaveDataToDb(List<int> id, List<string> tmp, List<int> empId)
+        {
+            using (SqlConnection conn = new SqlConnection(localDatabase))
+            {
+                conn.Open();
+                DateTime currentTime = DateTime.Now;
+                string query = "INSERT INTO Table_fp (Id, fp_template, time_registered, emp_id)";
+                query += " VALUES (@Id, @fp_template, @time_registered, @emp_id)";
+                try
+                {
+                    for (int i = 0; i < id.Count; i++)
+                    {
+                        using (SqlCommand myCommand = new SqlCommand(query, conn))
+                        {
+                            myCommand.Parameters.AddWithValue("@Id", id[i]);
+                            myCommand.Parameters.AddWithValue("@fp_template", tmp[i]);
+                            myCommand.Parameters.AddWithValue("@time_registered", currentTime);
+                            myCommand.Parameters.AddWithValue("@emp_id", empId[i]);
+                            myCommand.ExecuteNonQuery();
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    secondMessageBox.AppendText($"\nError message: {ex.Message}");
+                }
+                finally
+                {
+                    conn.Close();
+                    ReadAllFpData(conn);
+                }
+            }
+                
+        }
+
+       
         private void DeviceMessageBox_TextChanged(object sender, EventArgs e)
         {
             deviceMessageBox.SelectionStart = messageBox.Text.Length;
@@ -829,8 +871,6 @@ namespace zkfpPrototype
                     //ListAllEmpId.Remove(num);
                 }
             }
-            
-            
             for (int i = 0; i < ListAllEmpId.Count; i++)
             {
                 UserInfo fpInfo = new UserInfo();
@@ -844,7 +884,6 @@ namespace zkfpPrototype
                         fpInfo.Name = ListName[j].ToString();
                     }
                 }
-                
                 fpInfo.FingerIndex = Convert.ToInt32(ListAllId[i]);
                 fpInfo.TmpData = ListAllFpTemplate[i].ToString();
                 fpInfo.Privelage = 0;
@@ -852,8 +891,6 @@ namespace zkfpPrototype
                 fpInfo.Enabled = true;
                 fpInfo.iFlag = "1";
                 lstUserInfo.Add(fpInfo);
-
-                
             }
             
             deviceMessageBox.AppendText($"\n{ListAllEmpId.Count} records upload");
@@ -949,6 +986,37 @@ namespace zkfpPrototype
             */
         }
 
-       
+        private void BtnDeleteEmp_Click(object sender, EventArgs e)
+        {
+            string item = cmbDeleteEmp.SelectedItem.ToString();
+            if (ListAllFpTemplate.Count == 0)
+            {
+
+                if (!ListEmpId.Contains(Convert.ToInt32(item)))
+                {
+                    secondMessageBox.AppendText($"\nNo data in database");
+                    return;
+                }
+            }
+
+            SqlConnection conn = new SqlConnection(localDatabase);
+            string query = $"DELETE FROM Table_employee where Id = {Convert.ToInt32(item)}";
+            SqlCommand myCommand = new SqlCommand(query, conn);
+            try
+            {
+                conn.Open();
+                int numRow = myCommand.ExecuteNonQuery();
+                secondMessageBox.AppendText($"\nDelete successful, {numRow} rows affected");
+                ListEmpId.Clear();
+                ListName.Clear();
+
+            }
+            catch (Exception ex)
+            {
+                secondMessageBox.AppendText($"\nDelete item fail, Error message: {ex.Message}/nYou cannot delete this ");
+            }
+            conn.Close();
+            ReadEmpData(conn);
+        }
     }  
 }
