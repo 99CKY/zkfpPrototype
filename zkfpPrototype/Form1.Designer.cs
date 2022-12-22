@@ -61,6 +61,8 @@ namespace zkfpPrototype
             this.lblUserInput = new System.Windows.Forms.Label();
             this.labelNumOfFp = new System.Windows.Forms.Label();
             this.secondPage = new System.Windows.Forms.TabPage();
+            this.cmbDeleteEmp = new System.Windows.Forms.ComboBox();
+            this.lblDeleteEmp = new System.Windows.Forms.Label();
             this.btnDeleteEmp = new System.Windows.Forms.Button();
             this.cmbDeleteItem = new System.Windows.Forms.ComboBox();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -97,8 +99,7 @@ namespace zkfpPrototype
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lblDeleteEmp = new System.Windows.Forms.Label();
-            this.cmbDeleteEmp = new System.Windows.Forms.ComboBox();
+            this.btnUpdateEmpData = new System.Windows.Forms.Button();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -445,6 +446,23 @@ namespace zkfpPrototype
             this.secondPage.TabIndex = 0;
             this.secondPage.Text = "Database";
             // 
+            // cmbDeleteEmp
+            // 
+            this.cmbDeleteEmp.FormattingEnabled = true;
+            this.cmbDeleteEmp.Location = new System.Drawing.Point(288, 128);
+            this.cmbDeleteEmp.Name = "cmbDeleteEmp";
+            this.cmbDeleteEmp.Size = new System.Drawing.Size(76, 28);
+            this.cmbDeleteEmp.TabIndex = 32;
+            // 
+            // lblDeleteEmp
+            // 
+            this.lblDeleteEmp.AutoSize = true;
+            this.lblDeleteEmp.Location = new System.Drawing.Point(188, 131);
+            this.lblDeleteEmp.Name = "lblDeleteEmp";
+            this.lblDeleteEmp.Size = new System.Drawing.Size(94, 20);
+            this.lblDeleteEmp.TabIndex = 31;
+            this.lblDeleteEmp.Text = "Employee ID";
+            // 
             // btnDeleteEmp
             // 
             this.btnDeleteEmp.Location = new System.Drawing.Point(389, 127);
@@ -519,6 +537,7 @@ namespace zkfpPrototype
             // 
             // thirdPage
             // 
+            this.thirdPage.Controls.Add(this.btnUpdateEmpData);
             this.thirdPage.Controls.Add(this.richTextBox1);
             this.thirdPage.Controls.Add(this.save);
             this.thirdPage.Controls.Add(this.cancel);
@@ -544,7 +563,7 @@ namespace zkfpPrototype
             // save
             // 
             this.save.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.save.Location = new System.Drawing.Point(65, 174);
+            this.save.Location = new System.Drawing.Point(380, 21);
             this.save.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(150, 50);
@@ -556,7 +575,7 @@ namespace zkfpPrototype
             // cancel
             // 
             this.cancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cancel.Location = new System.Drawing.Point(265, 174);
+            this.cancel.Location = new System.Drawing.Point(380, 106);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(150, 50);
             this.cancel.TabIndex = 1;
@@ -568,7 +587,7 @@ namespace zkfpPrototype
             // 
             this.lbName.AutoSize = true;
             this.lbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbName.Location = new System.Drawing.Point(76, 97);
+            this.lbName.Location = new System.Drawing.Point(62, 112);
             this.lbName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbName.Name = "lbName";
             this.lbName.Size = new System.Drawing.Size(141, 23);
@@ -579,7 +598,7 @@ namespace zkfpPrototype
             // 
             this.lbId.AutoSize = true;
             this.lbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbId.Location = new System.Drawing.Point(102, 35);
+            this.lbId.Location = new System.Drawing.Point(88, 50);
             this.lbId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbId.Name = "lbId";
             this.lbId.Size = new System.Drawing.Size(113, 23);
@@ -589,7 +608,7 @@ namespace zkfpPrototype
             // tbName
             // 
             this.tbName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(215, 91);
+            this.tbName.Location = new System.Drawing.Point(201, 106);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(119, 30);
             this.tbName.TabIndex = 4;
@@ -597,7 +616,7 @@ namespace zkfpPrototype
             // tbId
             // 
             this.tbId.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbId.Location = new System.Drawing.Point(215, 32);
+            this.tbId.Location = new System.Drawing.Point(201, 47);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(119, 30);
             this.tbId.TabIndex = 5;
@@ -809,22 +828,17 @@ namespace zkfpPrototype
             this.timer1.Interval = 8000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
-            // lblDeleteEmp
+            // btnUpdateEmpData
             // 
-            this.lblDeleteEmp.AutoSize = true;
-            this.lblDeleteEmp.Location = new System.Drawing.Point(188, 131);
-            this.lblDeleteEmp.Name = "lblDeleteEmp";
-            this.lblDeleteEmp.Size = new System.Drawing.Size(94, 20);
-            this.lblDeleteEmp.TabIndex = 31;
-            this.lblDeleteEmp.Text = "Employee ID";
-            // 
-            // cmbDeleteEmp
-            // 
-            this.cmbDeleteEmp.FormattingEnabled = true;
-            this.cmbDeleteEmp.Location = new System.Drawing.Point(288, 128);
-            this.cmbDeleteEmp.Name = "cmbDeleteEmp";
-            this.cmbDeleteEmp.Size = new System.Drawing.Size(76, 28);
-            this.cmbDeleteEmp.TabIndex = 32;
+            this.btnUpdateEmpData.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateEmpData.Location = new System.Drawing.Point(578, 21);
+            this.btnUpdateEmpData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnUpdateEmpData.Name = "btnUpdateEmpData";
+            this.btnUpdateEmpData.Size = new System.Drawing.Size(150, 50);
+            this.btnUpdateEmpData.TabIndex = 7;
+            this.btnUpdateEmpData.Text = "Update";
+            this.btnUpdateEmpData.UseVisualStyleBackColor = true;
+            this.btnUpdateEmpData.Click += new System.EventHandler(this.BtnUpdateEmpData_Click);
             // 
             // Form1
             // 
@@ -940,6 +954,7 @@ namespace zkfpPrototype
         private Button btnDeleteEmp;
         private ComboBox cmbDeleteEmp;
         private Label lblDeleteEmp;
+        private Button btnUpdateEmpData;
     }
 }
 
