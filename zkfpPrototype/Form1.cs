@@ -1050,5 +1050,49 @@ namespace zkfpPrototype
                 }
             }
         }
+
+        private void BtnGetEmployeeData_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conn = new SqlConnection(localDatabase))
+            {
+                conn.Open();
+                string name = tbName.Text;
+                int id = Convert.ToInt32(tbId.Text);
+                string query = $"SELECT emp_name FROM Table_employee WHERE Id = {id}";
+
+                try
+                {
+                    using (SqlCommand myCommand = new SqlCommand(query, conn))
+                    {
+                        SqlDataReader nameReader = myCommand.ExecuteReader();
+                        while (nameReader.Read())
+                        {
+                            if (ListEmpId.Contains(id))
+                            {
+                                tbName.Text = nameReader["emp_name"].ToString();
+                            }
+                            
+                        }
+
+                        if (!ListEmpId.Contains(id))
+                        {
+                            richTextBox1.AppendText($"\nId not found");
+                        }
+
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    richTextBox1.AppendText($"\nError message: {ex.Message}");
+                }
+                finally
+                {
+                    conn.Close();
+                    ReadEmpData(conn);
+                }
+            }
+        }
     }  
 }
