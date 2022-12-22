@@ -23,7 +23,7 @@ namespace zkfpPrototype
         readonly string database = "testScan"; //database name
         readonly string username = "fis"; //username
         readonly string password = "fis"; //password
-        readonly string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint Project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
+        readonly string localDatabase = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\demo\\Desktop\\fingerprint_project\\test1\\zkfpPrototype\\Database1.mdf\";Integrated Security=True";
         readonly int machineNumber = 1;
 
         private static ArrayList ListFpTemplate = new ArrayList();
@@ -1017,6 +1017,38 @@ namespace zkfpPrototype
             }
             conn.Close();
             ReadEmpData(conn);
+        }
+
+        private void BtnUpdateEmpData_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection conn = new SqlConnection(localDatabase))
+            {
+                conn.Open();
+                string name = tbName.Text;
+                int id = Convert.ToInt32(tbId.Text);
+                string query = "UPDATE Table_employee SET emp_name = @emp_name WHERE Id = @Id";
+
+                try
+                {
+                    using (SqlCommand myCommand = new SqlCommand(query, conn))
+                    {
+                        myCommand.Parameters.AddWithValue("@emp_name", name);
+                        myCommand.Parameters.AddWithValue("@Id", id);
+                        int numRow = myCommand.ExecuteNonQuery();
+                        richTextBox1.AppendText($"\nUpdate success, {numRow} rows affected");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    richTextBox1.AppendText($"\nError message: {ex.Message}");
+                }
+                finally
+                {
+                    conn.Close();
+                    ReadEmpData(conn);
+                }
+            }
         }
     }  
 }
