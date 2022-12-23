@@ -54,7 +54,7 @@ namespace BioMetrixCore
             if (objCZKEM.Connect_Net(IPAdd, Port))
             {
                 //65535, 32767
-                if (objCZKEM.RegEvent(1, 32767))
+                if (objCZKEM.RegEvent(100, 32767))
                 {
                     // [ Register your events here ]
                     // [ Go through the _IZKEMEvents_Event class for a complete list of events

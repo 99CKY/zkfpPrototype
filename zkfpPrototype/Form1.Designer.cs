@@ -71,6 +71,7 @@ namespace zkfpPrototype
             this.dbControl = new System.Windows.Forms.TabControl();
             this.secondMessageBox = new System.Windows.Forms.RichTextBox();
             this.thirdPage = new System.Windows.Forms.TabPage();
+            this.btnGetEmployeeData = new System.Windows.Forms.Button();
             this.btnUpdateEmpData = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.save = new System.Windows.Forms.Button();
@@ -100,7 +101,6 @@ namespace zkfpPrototype
             this.lblName = new System.Windows.Forms.Label();
             this.inputTmp = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnGetEmployeeData = new System.Windows.Forms.Button();
             this.tabPageFp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFpImg)).BeginInit();
             this.tabPageDb.SuspendLayout();
@@ -553,6 +553,18 @@ namespace zkfpPrototype
             this.thirdPage.TabIndex = 0;
             this.thirdPage.Text = "Employee";
             // 
+            // btnGetEmployeeData
+            // 
+            this.btnGetEmployeeData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetEmployeeData.Location = new System.Drawing.Point(578, 107);
+            this.btnGetEmployeeData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnGetEmployeeData.Name = "btnGetEmployeeData";
+            this.btnGetEmployeeData.Size = new System.Drawing.Size(150, 50);
+            this.btnGetEmployeeData.TabIndex = 8;
+            this.btnGetEmployeeData.Text = "Get Employee Data";
+            this.btnGetEmployeeData.UseVisualStyleBackColor = true;
+            this.btnGetEmployeeData.Click += new System.EventHandler(this.BtnGetEmployeeData_Click);
+            // 
             // btnUpdateEmpData
             // 
             this.btnUpdateEmpData.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -841,18 +853,6 @@ namespace zkfpPrototype
             this.timer1.Enabled = true;
             this.timer1.Interval = 8000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
-            // btnGetEmployeeData
-            // 
-            this.btnGetEmployeeData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetEmployeeData.Location = new System.Drawing.Point(578, 107);
-            this.btnGetEmployeeData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnGetEmployeeData.Name = "btnGetEmployeeData";
-            this.btnGetEmployeeData.Size = new System.Drawing.Size(150, 50);
-            this.btnGetEmployeeData.TabIndex = 8;
-            this.btnGetEmployeeData.Text = "Get Employee Data";
-            this.btnGetEmployeeData.UseVisualStyleBackColor = true;
-            this.btnGetEmployeeData.Click += new System.EventHandler(this.BtnGetEmployeeData_Click);
             // 
             // Form1
             // 
